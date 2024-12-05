@@ -7,10 +7,12 @@ interface DoctorProps {
         y: number;
     };
     state: CharacterState;
+    isMoving?: boolean;
 }
 
-export const Doctor = ({ position, state }: DoctorProps) => {
+export const Doctor = ({ position, state, isMoving }: DoctorProps) => {
     const getStateClass = () => {
+        if (isMoving) return 'walking';
         switch (state) {
             case CharacterState.WALKING:
                 return 'walking';
@@ -31,7 +33,7 @@ export const Doctor = ({ position, state }: DoctorProps) => {
             }}
         >
             <div className="doctor-sprite" />
-            {state === CharacterState.HEALING && (
+            {(state === CharacterState.HEALING) && (
                 <div className="healing-effect" />
             )}
         </div>

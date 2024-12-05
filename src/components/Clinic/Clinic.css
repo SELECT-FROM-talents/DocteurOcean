@@ -1,121 +1,144 @@
 .clinic-scene {
     width: 100%;
-    height: 100%;
-    background-color: #e6e6e6; /* Fond plus clair */
-    position: relative;
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    grid-template-rows: auto 1fr;
-    gap: 20px;
-    padding: 20px;
+    height: 100vh;
+    display: flex;
+    background-color: #f0f2f5;
 }
 
 .clinic-background {
-    grid-column: 1 / -1;
-    grid-row: 1 / -1;
+    flex: 1;
     display: grid;
-    grid-template-areas:
-    "reception main"
-    "waiting main";
+    grid-template-columns: 320px 1fr;
+    grid-template-rows: auto 1fr;
+    padding: 20px;
+    gap: 20px;
+    position: relative;
+    height: 100vh;
+}
+
+/* Zone gauche avec la réception et la salle d'attente */
+.left-panel {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
 }
 
+/* Réception */
 .reception-desk {
-    grid-area: reception;
-    background-color: #ffffff; /* Fond blanc */
+    background: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    color: #333333; /* Texte foncé */
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .reception-desk h3 {
-    color: #2c3e50; /* Couleur de titre plus foncée */
-    margin-bottom: 1rem;
-}
-
-.patient-dialog {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #ffffff; /* Fond blanc */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    min-width: 300px;
-    color: #333333; /* Texte foncé */
-}
-
-.patient-dialog h4 {
     color: #2c3e50;
-    margin-bottom: 0.5rem;
+    font-size: 1.5em;
+    margin-bottom: 8px;
 }
 
-.patient-dialog p {
-    color: #555555;
-    margin: 0.5rem 0;
+.reception-desk p {
+    color: #666;
+    font-size: 0.9em;
 }
 
-.treatment-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
-    font-weight: 500;
+/* Salle d'attente */
+.waiting-room {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.treatment-button:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+/* Zone principale */
+.main-area {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    background: white;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
 }
 
-.treatment-button:active {
-    transform: translateY(0);
-}
-
+/* Doctor */
 .doctor {
-    width: 64px;
-    height: 64px;
-    background-color: #4a90e2;
-    border-radius: 50%;
     position: absolute;
-    transition: transform 0.3s ease-out;
-    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+    z-index: 10;
+    transition: all 0.3s ease-out;
+}
+
+/* Game UI */
+.game-ui {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.score, .stats {
+    font-size: 1.1em;
+    color: #2c3e50;
+}
+
+/* Dialog Container */
+.dialog-container {
+    position: fixed;
+    bottom: 30px;
+    left: 340px; /* Ajusté pour tenir compte du panneau gauche */
+    right: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .clinic-background {
+        grid-template-columns: 280px 1fr;
+    }
+
+    .dialog-container {
+        left: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .clinic-background {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+    }
+
+    .left-panel {
+        grid-row: auto;
+    }
+
+    .dialog-container {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+    }
 }
 
 /* Animations */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-.pulse {
-    animation: pulse 2s infinite;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .clinic-scene {
-        grid-template-columns: 1fr;
-        padding: 10px;
-    }
-
-    .clinic-background {
-        grid-template-areas:
-            "reception"
-            "waiting"
-            "main";
-    }
-
-    .patient-dialog {
-        width: 90%;
-        min-width: unset;
-    }
+.clinic-scene {
+    animation: fadeIn 0.3s ease-out;
 }

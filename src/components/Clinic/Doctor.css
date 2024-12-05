@@ -2,8 +2,9 @@
     width: 64px;
     height: 64px;
     position: absolute;
-    transition: transform 0.3s ease-out;
-    z-index: 100;
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    z-index: 10;
 }
 
 .doctor-sprite {
@@ -11,22 +12,21 @@
     height: 100%;
     background-color: #4a90e2;
     border-radius: 50%;
-    position: relative;
+    transition: all 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* État de marche */
 .doctor.walking .doctor-sprite {
     animation: walk 0.6s infinite alternate;
 }
 
-/* État de guérison */
 .doctor.healing .doctor-sprite {
+    background-color: #2ecc71;
     animation: pulse 1s infinite;
 }
 
-/* État de rêve */
 .doctor.dreaming .doctor-sprite {
+    background-color: #9b59b6;
     animation: float 2s infinite ease-in-out;
 }
 
@@ -37,32 +37,34 @@
     right: -10px;
     bottom: -10px;
     border-radius: 50%;
-    border: 2px solid #4CAF50;
+    border: 2px solid #2ecc71;
     animation: healing 1.5s infinite;
 }
 
-/* Animations */
 @keyframes walk {
     0% {
         transform: translateY(0);
     }
+    50% {
+        transform: translateY(-5px) scaleY(0.95);
+    }
     100% {
-        transform: translateY(-5px);
+        transform: translateY(0);
     }
 }
 
 @keyframes pulse {
     0% {
         transform: scale(1);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
     }
     50% {
         transform: scale(1.1);
-        box-shadow: 0 6px 12px rgba(74, 144, 226, 0.4);
+        box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
     }
     100% {
         transform: scale(1);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
     }
 }
 

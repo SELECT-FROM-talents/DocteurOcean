@@ -1,4 +1,3 @@
-// Types de base pour les positions et dimensions
 export interface Position {
     x: number;
     y: number;
@@ -9,84 +8,83 @@ export interface Size {
     height: number;
 }
 
-export interface Velocity {
-    dx: number;
-    dy: number;
-}
-
-// Types pour les éléments de jeu
 export interface GameObject {
     id: string;
     position: Position;
     size: Size;
     isInteractive: boolean;
-    zIndex?: number;
 }
 
-// Types pour les personnages
 export interface Character extends GameObject {
     name: string;
     state: CharacterState;
-    velocity?: Velocity;
-    sprite?: string;
-    animation?: AnimationState;
 }
 
-// Types spécifiques au docteur
 export interface Doctor extends Character {
     type: 'DOCTOR';
-    healingPower: number;
-    specialAbilities?: DoctorAbility[];
-    currentPatient?: string; // ID du patient en cours de traitement
+    dialogues: string[];
 }
 
-// Types spécifiques aux patients
 export interface Patient extends Character {
     type: 'PATIENT';
     condition: HealthCondition;
     dreamState: boolean;
-    symptoms?: Symptom[];
-    treatmentProgress?: number;
-    oceanMetaphor?: OceanMetaphor;
+    dreamPowers: DreamPower[];
+    oceanMetaphor: OceanMetaphor;
+    healingProgress: number;
 }
 
-// Types pour les métaphores océaniques
 export interface OceanMetaphor {
     type: OceanMetaphorType;
     severity: number;
-    affectedArea?: string;
+    solutions: OceanSolution[];
+    currentProgress: number;
 }
 
-// Énumérations
+export interface OceanSolution {
+    id: string;
+    type: SolutionType;
+    isCompleted: boolean;
+    description: string;
+}
+
+// Stats du jeu
+export interface GameStats {
+    patientsHealed: number;
+    totalScore: number;
+    timeElapsed: number;
+    successRate: number;
+}
+
+export enum DreamPower {
+    WATER_CONTROL = 'WATER_CONTROL',
+    MARINE_COMMUNICATION = 'MARINE_COMMUNICATION',
+    POLLUTION_CLEANING = 'POLLUTION_CLEANING',
+    CORAL_RESTORATION = 'CORAL_RESTORATION',
+    ICE_FORMATION = 'ICE_FORMATION'
+}
+
+export enum SolutionType {
+    CLEAN_POLLUTION = 'CLEAN_POLLUTION',
+    HEAL_CORAL = 'HEAL_CORAL',
+    REMOVE_PLASTIC = 'REMOVE_PLASTIC',
+    BALANCE_PH = 'BALANCE_PH',
+    STABILIZE_TEMPERATURE = 'STABILIZE_TEMPERATURE'
+}
+
 export enum CharacterState {
     IDLE = 'IDLE',
     WALKING = 'WALKING',
-    HEALING = 'HEALING',
     DREAMING = 'DREAMING',
-    TALKING = 'TALKING',
-    TRANSITIONING = 'TRANSITIONING'
+    HEALING = 'HEALING',
+    SWIMMING = 'SWIMMING',
+    USING_POWER = 'USING_POWER'
 }
 
 export enum HealthCondition {
     HEALTHY = 'HEALTHY',
     INFECTED = 'INFECTED',
-    HEALING = 'HEALING',
-    CRITICAL = 'CRITICAL'
-}
-
-export enum GameScene {
-    MAIN_MENU = 'MAIN_MENU',
-    CLINIC = 'CLINIC',
-    DREAM_WORLD = 'DREAM_WORLD',
-    PAUSE_MENU = 'PAUSE_MENU',
-    TREATMENT_ROOM = 'TREATMENT_ROOM'
-}
-
-export enum DoctorAbility {
-    DREAM_INDUCEMENT = 'DREAM_INDUCEMENT',
-    OCEAN_HEALING = 'OCEAN_HEALING',
-    CORAL_RESTORATION = 'CORAL_RESTORATION',
-    WATER_PURIFICATION = 'WATER_PURIFICATION'
+    HEALING = 'HEALING'
 }
 
 export enum OceanMetaphorType {
@@ -97,56 +95,19 @@ export enum OceanMetaphorType {
     ICE_MELTING = 'ICE_MELTING'         // Représente une perte de tissu
 }
 
-export enum AnimationState {
-    IDLE = 'IDLE',
-    WALK_LEFT = 'WALK_LEFT',
-    WALK_RIGHT = 'WALK_RIGHT',
-    HEAL = 'HEAL',
-    DREAM = 'DREAM'
+export enum GameScene {
+    MAIN_MENU = 'MAIN_MENU',
+    CLINIC = 'CLINIC',
+    DREAM_WORLD = 'DREAM_WORLD'
 }
 
-export enum Symptom {
-    FEVER = 'FEVER',
-    PAIN = 'PAIN',
-    INFLAMMATION = 'INFLAMMATION',
-    FATIGUE = 'FATIGUE'
-}
-
-// État global du jeu
 export interface GameState {
     currentScene: GameScene;
+    activePatient: Patient | null;
     doctor: Doctor;
-    patients: Patient[];
+    waitingPatients: Patient[];
     score: number;
     isPaused: boolean;
     dreamWorldActive: boolean;
-    currentLevel?: number;
-    difficulty?: GameDifficulty;
     stats: GameStats;
-}
-
-export interface GameStats {
-    patientsHealed: number;
-    totalScore: number;
-    timeElapsed: number;
-    successRate: number;
-}
-
-export enum GameDifficulty {
-    EASY = 'EASY',
-    NORMAL = 'NORMAL',
-    HARD = 'HARD'
-}
-
-// Types pour les collisions et interactions
-export interface Collision {
-    object1: GameObject;
-    object2: GameObject;
-    type: CollisionType;
-}
-
-export enum CollisionType {
-    NONE = 'NONE',
-    OVERLAP = 'OVERLAP',
-    CONTAINMENT = 'CONTAINMENT'
 }

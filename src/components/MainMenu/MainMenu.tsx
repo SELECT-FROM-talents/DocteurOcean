@@ -1,51 +1,53 @@
 import { useGame } from '@/contexts/GameContext';
-import { GameScene, GameDifficulty } from '@/types/game.types';
+import { GameScene } from '@/types/game.types';
 import './MainMenu.css';
 
 export const MainMenu = () => {
     const { dispatch } = useGame();
 
-    const handleStartGame = (difficulty: GameDifficulty) => {
-        dispatch({ type: 'UPDATE_DIFFICULTY', payload: difficulty });
+    const handleStartGame = () => {
         dispatch({ type: 'CHANGE_SCENE', payload: GameScene.CLINIC });
     };
 
     return (
         <div className="main-menu-container">
             <div className="menu-content">
-                <h1 className="game-title">Docteur Ocean</h1>
-                <p className="game-subtitle">Guérissez vos patients à travers leurs rêves marins</p>
+                <h1 className="game-title">Voyage Intérieur</h1>
+                <p className="game-subtitle">Plongez dans votre océan intérieur pour vous guérir</p>
 
                 <div className="menu-buttons">
                     <button
-                        className="menu-button easy"
-                        onClick={() => handleStartGame(GameDifficulty.EASY)}
+                        className="menu-button start"
+                        onClick={handleStartGame}
                     >
-                        Mode Facile
-                        <span className="button-description">Pour débuter en douceur</span>
+                        Commencer le Voyage
+                        <span className="button-description">
+                            Explorez votre monde intérieur et guérissez-vous
+                        </span>
+                    </button>
+                </div>
+
+                <div className="menu-options">
+                    <button className="menu-button tutorial">
+                        Comment Jouer
+                        <span className="button-description">
+                            Découvrez vos pouvoirs et apprenez à naviguer dans vos rêves
+                        </span>
                     </button>
 
-                    <button
-                        className="menu-button normal"
-                        onClick={() => handleStartGame(GameDifficulty.NORMAL)}
-                    >
-                        Mode Normal
-                        <span className="button-description">Pour les médecins expérimentés</span>
-                    </button>
-
-                    <button
-                        className="menu-button hard"
-                        onClick={() => handleStartGame(GameDifficulty.HARD)}
-                    >
-                        Mode Difficile
-                        <span className="button-description">Pour les maîtres des océans</span>
+                    <button className="menu-button about">
+                        À Propos
+                        <span className="button-description">
+                            Comprendre la métaphore entre l'océan et votre santé
+                        </span>
                     </button>
                 </div>
 
                 <div className="menu-footer">
-                    <button className="menu-button tutorial">
-                        Tutorial
-                    </button>
+                    <div className="ocean-facts">
+                        <p>Saviez-vous que...</p>
+                        <p className="fact">Comme l'océan, votre corps est composé à 70% d'eau</p>
+                    </div>
                     <button className="menu-button credits">
                         Crédits
                     </button>

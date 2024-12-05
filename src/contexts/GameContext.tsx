@@ -2,24 +2,23 @@ import { createContext, useReducer, useContext, ReactNode } from 'react';
 import {
     GameState,
     GameScene,
-    Position,
     Patient,
     Doctor,
     CharacterState,
-    GameStats,
-    GameDifficulty
+    DreamPower, Position
 } from '@/types/game.types';
 
 type GameAction =
     | { type: 'CHANGE_SCENE'; payload: GameScene }
+    | { type: 'SELECT_ACTIVE_PATIENT'; payload: Patient }
     | { type: 'MOVE_DOCTOR'; payload: Position }
-    | { type: 'ADD_PATIENT'; payload: Patient }
-    | { type: 'UPDATE_PATIENT'; payload: { id: string; updates: Partial<Patient> } }
+    | { type: 'UPDATE_PATIENT_PROGRESS'; payload: { progress: number } }
+    | { type: 'USE_DREAM_POWER'; payload: { power: DreamPower } }
+    | { type: 'UPDATE_OCEAN_SOLUTION'; payload: { solutionId: string; isCompleted: boolean } }
+    | { type: 'ADD_WAITING_PATIENT'; payload: Patient }
     | { type: 'UPDATE_SCORE'; payload: number }
     | { type: 'TOGGLE_PAUSE' }
-    | { type: 'TOGGLE_DREAM_WORLD' }
-    | { type: 'UPDATE_STATS'; payload: Partial<GameStats> }
-    | { type: 'UPDATE_DIFFICULTY'; payload: GameDifficulty };
+    | { type: 'TOGGLE_DREAM_WORLD' };
 
 const initialDoctor: Doctor = {
     id: 'doctor-1',
@@ -29,26 +28,27 @@ const initialDoctor: Doctor = {
     size: { width: 64, height: 64 },
     state: CharacterState.IDLE,
     isInteractive: false,
-    healingPower: 1
-};
-
-const initialStats: GameStats = {
-    patientsHealed: 0,
-    totalScore: 0,
-    timeElapsed: 0,
-    successRate: 100
+    dialogues: [
+        "Bienvenue dans votre monde intérieur.",
+        "Utilisez vos pouvoirs pour guérir votre océan.",
+        "Chaque problème a sa solution, prenez votre temps."
+    ]
 };
 
 const initialState: GameState = {
     currentScene: GameScene.MAIN_MENU,
+    activePatient: null,
     doctor: initialDoctor,
-    patients: [],
+    waitingPatients: [],
     score: 0,
     isPaused: false,
     dreamWorldActive: false,
-    currentLevel: 1,
-    difficulty: GameDifficulty.NORMAL,
-    stats: initialStats
+    stats: {
+        patientsHealed: 0,
+        totalScore: 0,
+        timeElapsed: 0,
+        successRate: 100
+    }
 };
 
 function gameReducer(state: GameState, action: GameAction): GameState {
@@ -58,6 +58,26 @@ function gameReducer(state: GameState, action: GameAction): GameState {
                 ...state,
                 currentScene: action.payload
             };
+
+        case 'SELECT_ACTIVE_PATIENT':
+            return {
+                ...state,
+                activePatient: action.payload
+            };
+
+        case 'UPDATE_PATIENT_PROGRESS':
+            if (!state.activePatient) return state;
+            return {
+                ...state,
+                activePatient: {
+                    ...state.activePatient,
+                    healingProgress: action.payload.progress
+                }
+            };
+
+        case 'USE_DREAM_POWER':
+            // Logique pour utiliser un pouvoir dans le monde des rêves
+            return state;
 
         case 'MOVE_DOCTOR':
             return {
@@ -69,30 +89,36 @@ function gameReducer(state: GameState, action: GameAction): GameState {
                 }
             };
 
-        case 'ADD_PATIENT':
+        case 'UPDATE_OCEAN_SOLUTION':
+            if (!state.activePatient?.oceanMetaphor) return state;
             return {
                 ...state,
-                patients: [...state.patients, action.payload]
+                activePatient: {
+                    ...state.activePatient,
+                    oceanMetaphor: {
+                        ...state.activePatient.oceanMetaphor,
+                        solutions: state.activePatient.oceanMetaphor.solutions.map(
+                            solution => solution.id === action.payload.solutionId
+                                ? { ...solution, isCompleted: action.payload.isCompleted }
+                                : solution
+                        )
+                    }
+                }
             };
 
-        case 'UPDATE_PATIENT':
+        case 'ADD_WAITING_PATIENT':
             return {
                 ...state,
-                patients: state.patients.map(patient =>
-                    patient.id === action.payload.id
-                        ? { ...patient, ...action.payload.updates }
-                        : patient
-                )
+                waitingPatients: [...state.waitingPatients, action.payload]
             };
 
         case 'UPDATE_SCORE':
-            const newScore = action.payload;
             return {
                 ...state,
-                score: newScore,
+                score: action.payload,
                 stats: {
                     ...state.stats,
-                    totalScore: state.stats.totalScore + (newScore - state.score)
+                    totalScore: state.stats.totalScore + action.payload
                 }
             };
 
@@ -105,16 +131,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         case 'TOGGLE_DREAM_WORLD':
             return {
                 ...state,
-                dreamWorldActive: !state.dreamWorldActive
-            };
-
-        case 'UPDATE_STATS':
-            return {
-                ...state,
-                stats: {
-                    ...state.stats,
-                    ...action.payload
-                }
+                dreamWorldActive: !state.dreamWorldActive,
+                currentScene: !state.dreamWorldActive ? GameScene.DREAM_WORLD : GameScene.CLINIC
             };
 
         default:

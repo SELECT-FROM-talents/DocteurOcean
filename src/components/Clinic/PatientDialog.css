@@ -1,0 +1,68 @@
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.dialog-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 400px;
+    max-width: 600px;
+    background: white;
+    z-index: 1000;
+}
+
+.dialog-window.speaker-patient {
+    border-left: 4px solid #e74c3c;
+}
+
+.dialog-window.speaker-doctor {
+    border-left: 4px solid #4a90e2;
+}
+
+.dialog-inner {
+    padding: 20px;
+}
+
+.dialog-top {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.dialog-speaker {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.dialog-message {
+    margin: 15px 0;
+    line-height: 1.4;
+    color: #444;
+    min-height: 50px;
+}
+
+.dialog-continue {
+    float: right;
+    padding: 8px 16px;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.dialog-continue:hover {
+    background: #357abd;
+}
+
+.dialog-continue.start-dream {
+    background: #2ecc71;
+}

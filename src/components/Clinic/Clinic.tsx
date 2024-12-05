@@ -1,88 +1,152 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useGame } from '@/contexts/GameContext';
-import { Position, Patient, CharacterState, HealthCondition, OceanMetaphorType } from '@/types/game.types';
+import { Patient, Position, CharacterState } from '@/types/game.types';
 import { generatePatient } from '@/utils/gameHelpers';
-import { useClickInteraction } from '@/hooks/useClickInteraction';
-import { Doctor } from './Doctor';
 import { WaitingRoom } from './WaitingRoom';
+import { Doctor } from './Doctor';
+import { PatientDialog } from './PatientDialog';
+import { useClickInteraction } from '@/hooks/useClickInteraction';
 import './Clinic.css';
 
 export const Clinic = () => {
     const { state, dispatch } = useGame();
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+    const [dialogStep, setDialogStep] = useState(0);
+    const [isMoving, setIsMoving] = useState(false);
 
-    const handlePatientClick = (patient: Patient) => {
-        if (state.isPaused) return;
+    // Gestion des clics dans la scène
+    const handleSceneClick = useCallback((position: Position) => {
+        if (state.isPaused || isMoving) return;
+
+        setIsMoving(true);
+        dispatch({ type: 'MOVE_DOCTOR', payload: position });
+
+        setTimeout(() => {
+            setIsMoving(false);
+        }, 1000);
+    }, [state.isPaused, isMoving, dispatch]);
+
+    const { handleClick } = useClickInteraction({
+        onInteraction: handleSceneClick,
+    });
+
+    const handlePatientClick = useCallback(async (patient: Patient) => {
+        if (state.isPaused || isMoving) return;
+
         setSelectedPatient(patient);
-        // Position le docteur près du patient
+        dispatch({ type: 'SELECT_ACTIVE_PATIENT', payload: patient });
+
         const doctorPosition: Position = {
-            x: patient.position.x - 80,
+            x: patient.position.x - 100,
             y: patient.position.y
         };
+
+        setIsMoving(true);
         dispatch({ type: 'MOVE_DOCTOR', payload: doctorPosition });
-    };
 
-    const handleStartTreatment = () => {
+        setTimeout(() => {
+            setIsMoving(false);
+            setDialogStep(1);
+        }, 1000);
+    }, [state.isPaused, isMoving, dispatch]);
+
+    const handleDialogProgress = useCallback(() => {
+        if (dialogStep < 3) {
+            setDialogStep(prev => prev + 1);
+        } else {
+            handleStartDream();
+        }
+    }, [dialogStep]);
+
+    const handleStartDream = useCallback(() => {
         if (!selectedPatient) return;
-        dispatch({
-            type: 'UPDATE_PATIENT',
-            payload: {
-                id: selectedPatient.id,
-                updates: {
-                    state: CharacterState.DREAMING,
-                }
-            }
-        });
+        setDialogStep(0);
         dispatch({ type: 'TOGGLE_DREAM_WORLD' });
-    };
+    }, [selectedPatient, dispatch]);
 
-    // Génère des patients périodiquement
+    const getDialogContent = useCallback(() => {
+        if (!selectedPatient) return null;
+
+        const dialogs = [
+            {
+                text: `Bonjour ${selectedPatient.name}, je suis le Dr. Ocean. Comment vous sentez-vous ?`,
+                speaker: 'doctor'
+            },
+            {
+                text: `Je ne me sens pas très bien... Mon corps me semble comme un océan troublé.`,
+                speaker: 'patient'
+            },
+            {
+                text: `Je comprends. Je vois que votre océan intérieur montre des signes de ${selectedPatient.oceanMetaphor.type}. 
+                      Voulez-vous explorer cela ensemble ?`,
+                speaker: 'doctor'
+            },
+            {
+                text: `Pour vous guérir, vous devrez plonger dans votre océan intérieur et le soigner vous-même. 
+                      Êtes-vous prêt pour ce voyage ?`,
+                speaker: 'doctor'
+            }
+        ];
+
+        return dialogs[dialogStep];
+    }, [selectedPatient, dialogStep]);
+
+    // Génération périodique de patients
     useEffect(() => {
-        if (state.patients.length >= 5) return; // Maximum 5 patients en attente
+        if (state.waitingPatients.length >= 5) return;
 
         const interval = setInterval(() => {
-            if (state.patients.length < 5 && !state.isPaused) {
-                const newPatient = generatePatient(state.patients.length);
-                dispatch({ type: 'ADD_PATIENT', payload: newPatient });
+            if (state.waitingPatients.length < 5 && !state.isPaused) {
+                const newPatient = generatePatient(state.waitingPatients.length);
+                dispatch({ type: 'ADD_WAITING_PATIENT', payload: newPatient });
             }
-        }, 5000); // Nouveau patient toutes les 5 secondes
+        }, 5000);
 
         return () => clearInterval(interval);
-    }, [state.patients.length, state.isPaused]);
+    }, [state.waitingPatients.length, state.isPaused, dispatch]);
 
     return (
         <div className="clinic-scene">
             <div className="clinic-background">
-                <div className="reception-desk">
-                    <h3>Réception</h3>
+                <div className="left-panel">
+                    <div className="reception-desk">
+                        <h3>Clinique du Dr. Ocean</h3>
+                        <p>Un voyage intérieur vers la guérison</p>
+                    </div>
+
+                    <WaitingRoom
+                        patients={state.waitingPatients}
+                        onPatientClick={handlePatientClick}
+                        selectedPatient={selectedPatient}
+                    />
                 </div>
 
-                <WaitingRoom
-                    patients={state.patients}
-                    onPatientClick={handlePatientClick}
-                    selectedPatient={selectedPatient}
-                />
+                <div className="main-area" onClick={handleClick}>
+                    <Doctor
+                        position={state.doctor.position}
+                        state={state.doctor.state}
+                        isMoving={isMoving}
+                    />
+                </div>
 
-                <Doctor
-                    position={state.doctor.position}
-                    state={state.doctor.state}
-                />
-
-                {selectedPatient && (
-                    <div className="patient-dialog">
-                        <h4>{selectedPatient.name}</h4>
-                        <p>État: {selectedPatient.condition}</p>
-                        {selectedPatient.oceanMetaphor && (
-                            <p>Métaphore: {selectedPatient.oceanMetaphor.type}</p>
-                        )}
-                        <button
-                            className="treatment-button"
-                            onClick={handleStartTreatment}
-                        >
-                            Commencer le traitement
-                        </button>
-                    </div>
+                {selectedPatient && dialogStep > 0 && (
+                    <PatientDialog
+                        dialog={getDialogContent()}
+                        onContinue={handleDialogProgress}
+                        patient={selectedPatient}
+                        isLastStep={dialogStep === 3}
+                    />
                 )}
+
+                <div className="game-ui">
+                    <div className="score">Score: {state.score}</div>
+                    <div className="stats">
+                        Patients guéris: {state.stats.patientsHealed}
+                        <br />
+                        Temps: {Math.floor(state.stats.timeElapsed / 60)}:
+                        {(state.stats.timeElapsed % 60).toString().padStart(2, '0')}
+                    </div>
+                </div>
             </div>
         </div>
     );
