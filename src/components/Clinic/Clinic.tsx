@@ -100,7 +100,7 @@ export const Clinic = () => {
                 const newPatient = generatePatient(state.waitingPatients.length);
                 dispatch({ type: 'ADD_WAITING_PATIENT', payload: newPatient });
             }
-        }, 5000);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, [state.waitingPatients.length, state.isPaused, dispatch]);

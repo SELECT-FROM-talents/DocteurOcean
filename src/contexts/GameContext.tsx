@@ -80,7 +80,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         case 'SELECT_ACTIVE_PATIENT':
             return {
                 ...state,
-                activePatient: action.payload
+                activePatient: {
+                    ...action.payload,
+                    type: 'PATIENT',
+                }
             };
 
         case 'UPDATE_PATIENT_PROGRESS':
@@ -154,14 +157,15 @@ function gameReducer(state: GameState, action: GameAction): GameState {
             };
 
         case 'SET_DREAM_STATE':
+            if (!state.activePatient) return state;
             return {
                 ...state,
                 activePatient: {
                     ...state.activePatient,
                     dreamState: action.payload,
-                } as Patient,
+                    type: 'PATIENT', // Ensure type is always 'PATIENT'
+                },
             };
-
 
         default:
             return state;
