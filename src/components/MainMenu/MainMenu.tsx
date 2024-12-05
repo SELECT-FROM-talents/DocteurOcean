@@ -61,6 +61,22 @@ export const MainMenu = () => {
                     </button>
                 </div>
 
+                <p> Dans Docteur Océan, vous incarnez un médecin pas comme les autres. Votre mission : sauver les océans
+                    en soignant des patients dont les maux représentent les problèmes qui menacent nos écosystèmes
+                    marins.</p>
+                <p>Quand un patient arrive dans votre cabinet avec un problème aux poumons, c'est en réalité une
+                    barrière de corail qui se dégrade. Pour le guérir, vous l'envoyez dans le DreamWorld, un univers
+                    onirique où son corps devient un vaste océan. En accomplissant différentes tâches dans ce monde,
+                    vous pourrez soigner le patient et par la même occasion, sensibiliser les joueurs aux enjeux
+                    cruciaux de la pollution marine.</p>
+                <p>Docteur Océan est plus qu'un jeu, c'est une expérience ludique et pédagogique qui révèle les liens
+                    étroits entre la santé des hommes et celle de nos océans. Préparez-vous à une plongée à la fois
+                    surprenante et engagée, où vos talents de médecin serviront une cause essentielle : la protection de
+                    la vie sous-marine et de sa biodiversité.</p>
+                <p>Avec son gameplay original et son propos écologique fort, Docteur Océan embarquera petits et grands
+                    dans une aventure aussi amusante qu'enrichissante. Alors, prêts à enfiler votre blouse blanche pour
+                    devenir un défenseur des océans ?</p>
+
                 <div className="menu-footer">
                     <div className="ocean-facts">
                         <p>Saviez-vous que...</p>
