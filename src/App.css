@@ -1,32 +1,51 @@
-.game-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #1a1a1a;
+@font-face {
+  font-family: "njnaruto";
+  src: url("/public/fonts/njnaruto.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-h1 {
-    font-size: 2.5em;
-    color: #4a90e2;
-    margin-bottom: 2rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+#app {
+  text-align: center;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  position: relative;
+  height: 100vh;
 }
 
-/* Animation de base pour les éléments interactifs */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+.logo {
+  display: inline-block;
+  width: 100px;
+  height: auto;
+  cursor: pointer;
+  user-select: none;
 }
 
-.interactive-element {
-    cursor: pointer;
-    transition: transform 0.2s;
+.logo-image {
+  width: 100%;
+  height: auto;
 }
 
-.interactive-element:hover {
-    animation: pulse 1s infinite;
+pre {
+  font-size: 7px;
+  color: #333;
+  text-align: center;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fa7522;
+  font-family: "njnaruto", sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes confettiAnimation {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3);
+  }
 }
