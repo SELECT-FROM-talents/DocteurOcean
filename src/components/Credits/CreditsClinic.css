@@ -1,0 +1,144 @@
+.clinic-scene {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    background-color: #f0f2f5;
+}
+
+.clinic-background {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    grid-template-rows: auto 1fr;
+    padding: 20px;
+    gap: 20px;
+    position: relative;
+    height: 100vh;
+}
+
+/* Zone gauche avec la réception et la salle d'attente */
+.left-panel {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Réception */
+.reception-desk {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reception-desk h3 {
+    color: #2c3e50;
+    font-size: 1.5em;
+    margin-bottom: 8px;
+}
+
+.reception-desk p {
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* Salle d'attente */
+.waiting-room {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Zone principale */
+.main-area {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    background: white;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Doctor */
+.doctor {
+    position: absolute;
+    z-index: 10;
+    transition: all 0.3s ease-out;
+}
+
+/* Game UI */
+.game-ui {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.score, .stats {
+    font-size: 1.1em;
+    color: #2c3e50;
+}
+
+/* Dialog Container */
+.dialog-container {
+    position: fixed;
+    bottom: 30px;
+    left: 340px; /* Ajusté pour tenir compte du panneau gauche */
+    right: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .clinic-background {
+        grid-template-columns: 280px 1fr;
+    }
+
+    .dialog-container {
+        left: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .clinic-background {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+    }
+
+    .left-panel {
+        grid-row: auto;
+    }
+
+    .dialog-container {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.clinic-scene {
+    animation: fadeIn 0.3s ease-out;
+}
