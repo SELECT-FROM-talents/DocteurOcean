@@ -1,0 +1,22 @@
+.dream-world-scene {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a2a6c, #2a4858);
+    position: relative;
+    overflow: hidden;
+}
+
+.dream-world-background {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dream-world-scene h2 {
+    color: #89cff0;
+    text-shadow: 0 0 10px rgba(137, 207, 240, 0.5);
+    margin-bottom: 2rem;
+}
