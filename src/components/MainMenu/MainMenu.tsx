@@ -9,6 +9,18 @@ export const MainMenu = () => {
         dispatch({ type: 'CHANGE_SCENE', payload: GameScene.CLINIC });
     };
 
+    const handleShowTutorial = () => {
+        dispatch({ type: 'CHANGE_SCENE', payload: GameScene.TUTORIAL });
+    };
+
+    const handleShowAbout = () => {
+        dispatch({ type: 'CHANGE_SCENE', payload: GameScene.ABOUT });
+    };
+
+    const handleShowCredits = () => {
+        dispatch({ type: 'CHANGE_SCENE', payload: GameScene.CREDITS });
+    };
+
     return (
         <div className="main-menu-container">
             <div className="menu-content">
@@ -28,14 +40,20 @@ export const MainMenu = () => {
                 </div>
 
                 <div className="menu-options">
-                    <button className="menu-button tutorial">
+                    <button
+                        className="menu-button tutorial"
+                        onClick={handleShowTutorial}
+                    >
                         Comment Jouer
                         <span className="button-description">
                             Découvrez vos pouvoirs et apprenez à naviguer dans vos rêves
                         </span>
                     </button>
 
-                    <button className="menu-button about">
+                    <button
+                        className="menu-button about"
+                        onClick={handleShowAbout}
+                    >
                         À Propos
                         <span className="button-description">
                             Comprendre la métaphore entre l'océan et votre santé
@@ -48,7 +66,10 @@ export const MainMenu = () => {
                         <p>Saviez-vous que...</p>
                         <p className="fact">Comme l'océan, votre corps est composé à 70% d'eau</p>
                     </div>
-                    <button className="menu-button credits">
+                    <button
+                        className="menu-button credits"
+                        onClick={handleShowCredits}
+                    >
                         Crédits
                     </button>
                 </div>

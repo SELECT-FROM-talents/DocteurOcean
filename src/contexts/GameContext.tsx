@@ -18,7 +18,10 @@ type GameAction =
     | { type: 'ADD_WAITING_PATIENT'; payload: Patient }
     | { type: 'UPDATE_SCORE'; payload: number }
     | { type: 'TOGGLE_PAUSE' }
-    | { type: 'TOGGLE_DREAM_WORLD' };
+    | { type: 'TOGGLE_DREAM_WORLD' }
+    | { type: 'SHOW_TUTORIAL' }
+    | { type: 'SHOW_CREDITS' }
+    | { type: 'SHOW_ABOUT' };
 
 const initialDoctor: Doctor = {
     id: 'doctor-1',
@@ -58,7 +61,21 @@ function gameReducer(state: GameState, action: GameAction): GameState {
                 ...state,
                 currentScene: action.payload
             };
-
+        case 'SHOW_TUTORIAL':
+            return {
+                ...state,
+                currentScene: GameScene.TUTORIAL
+            };
+        case 'SHOW_CREDITS':
+            return {
+                ...state,
+                currentScene: GameScene.CREDITS
+            };
+        case 'SHOW_ABOUT':
+            return {
+                ...state,
+                currentScene: GameScene.ABOUT
+            };
         case 'SELECT_ACTIVE_PATIENT':
             return {
                 ...state,

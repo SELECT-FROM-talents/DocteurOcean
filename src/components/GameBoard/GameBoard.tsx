@@ -4,6 +4,9 @@ import { GameScene } from '@/types/game.types';
 import { MainMenu } from '../MainMenu/MainMenu';
 import { Clinic } from '../Clinic/Clinic';
 import { DreamWorld } from '../DreamWorld/DreamWorld';
+import { About } from '../About/About';
+import { Tutorial } from '../Tutorial/Tutorial';
+import { Credits } from '../Credits/Credits';
 import './GameBoard.css';
 
 export const GameBoard = () => {
@@ -13,13 +16,16 @@ export const GameBoard = () => {
         switch (state.currentScene) {
             case GameScene.MAIN_MENU:
                 return <MainMenu />;
-
             case GameScene.CLINIC:
                 return <Clinic />;
-
             case GameScene.DREAM_WORLD:
                 return <DreamWorld />;
-
+            case GameScene.ABOUT:
+                return <About />;
+            case GameScene.TUTORIAL:
+                return <Tutorial />;
+            case GameScene.CREDITS:
+                return <Credits />;
             default:
                 return <div>Scene inconnue</div>;
         }

@@ -98,7 +98,10 @@ export enum OceanMetaphorType {
 export enum GameScene {
     MAIN_MENU = 'MAIN_MENU',
     CLINIC = 'CLINIC',
-    DREAM_WORLD = 'DREAM_WORLD'
+    DREAM_WORLD = 'DREAM_WORLD',
+    ABOUT = 'ABOUT',
+    TUTORIAL = 'TUTORIAL',
+    CREDITS = 'CREDITS'
 }
 
 export interface GameState {
