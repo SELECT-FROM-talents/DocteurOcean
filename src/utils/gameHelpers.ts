@@ -101,7 +101,6 @@ const getDescriptionForSolution = (type: SolutionType): string => {
     return descriptions[type] || "Solution à trouver";
 };
 
-export const setDreamState = (dreamState: boolean) => {
-    const { dispatch } = useGame();
-    dispatch({ type: 'SET_DREAM_STATE', payload: dreamState });
+export const setDreamState = (dispatch, state) => {
+    dispatch({ type: 'SET_DREAM_STATE', payload: state });
 };

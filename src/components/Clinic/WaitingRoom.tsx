@@ -28,6 +28,12 @@ export const WaitingRoom = ({
                         <div className="patient-info">
                             <span className="patient-name">{patient.name}</span>
                             <span className="patient-condition">{patient.condition}</span>
+                            <span className="patient-status">{patient.status}</span>
+                            <div className="patient-ocean-metaphor">
+                                <span className="ocean-metaphor-type">{patient.oceanMetaphor.type}</span>
+                                <span className="ocean-metaphor-severity">Severity: {patient.oceanMetaphor.severity}</span>
+                                <span className="ocean-metaphor-progress">Progress: {patient.oceanMetaphor.currentProgress}</span>
+                            </div>
                         </div>
                     </div>
                 ))}

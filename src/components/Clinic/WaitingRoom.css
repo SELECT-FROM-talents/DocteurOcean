@@ -55,3 +55,20 @@
     color: #666;
     text-transform: capitalize;
 }
+
+.patient-ocean-metaphor {
+    margin-top: 10px;
+    font-size: 0.85em;
+    color: #666;
+}
+
+.ocean-metaphor-type {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.ocean-metaphor-severity,
+.ocean-metaphor-progress {
+    display: block;
+    margin-top: 2px;
+}
