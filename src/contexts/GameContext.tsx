@@ -1,4 +1,4 @@
-import { createContext, useReducer, useContext, ReactNode } from 'react';
+import React, { createContext, useReducer, useContext, ReactNode } from 'react';
 import {
     GameState,
     GameScene,
@@ -21,7 +21,8 @@ type GameAction =
     | { type: 'TOGGLE_DREAM_WORLD' }
     | { type: 'SHOW_TUTORIAL' }
     | { type: 'SHOW_CREDITS' }
-    | { type: 'SHOW_ABOUT' };
+    | { type: 'SHOW_ABOUT' }
+    | { type: 'SET_DREAM_STATE'; payload: boolean };
 
 const initialDoctor: Doctor = {
     id: 'doctor-1',
@@ -152,6 +153,16 @@ function gameReducer(state: GameState, action: GameAction): GameState {
                 currentScene: !state.dreamWorldActive ? GameScene.DREAM_WORLD : GameScene.CLINIC
             };
 
+        case 'SET_DREAM_STATE':
+            return {
+                ...state,
+                activePatient: {
+                    ...state.activePatient,
+                    dreamState: action.payload,
+                } as Patient,
+            };
+
+
         default:
             return state;
     }
@@ -159,13 +170,13 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
 const GameContext = createContext<{
     state: GameState;
-    dispatch: React.Dispatch<GameAction>;
+    dispatch: React.Dispatch<any>;
 }>({
     state: initialState,
-    dispatch: () => null
+    dispatch: () => null,
 });
 
-export const GameProvider = ({ children }: { children: ReactNode }) => {
+export const GameProvider: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState);
 
     return (

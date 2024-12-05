@@ -7,6 +7,7 @@ import {
     DreamPower,
     SolutionType
 } from '@/types/game.types';
+import {useGame} from "@/contexts/GameContext.tsx";
 
 const patientNames = [
     'Sophie', 'Lucas', 'Emma', 'Louis', 'Chloé',
@@ -17,6 +18,7 @@ function getRandomElement<T>(array: readonly T[]): T {
     if (array.length === 0) {
         throw new Error("Cannot get random element from empty array");
     }
+    // @ts-ignore
     return array[Math.floor(Math.random() * array.length)];
 }
 
@@ -97,4 +99,9 @@ const getDescriptionForSolution = (type: SolutionType): string => {
     };
 
     return descriptions[type] || "Solution à trouver";
+};
+
+export const setDreamState = (dreamState: boolean) => {
+    const { dispatch } = useGame();
+    dispatch({ type: 'SET_DREAM_STATE', payload: dreamState });
 };
