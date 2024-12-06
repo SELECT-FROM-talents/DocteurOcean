@@ -1,79 +1,100 @@
 .doctor {
-    width: 64px;
-    height: 64px;
+    width: 90px;
+    height: 90px;
     position: absolute;
-    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     z-index: 10;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .doctor-sprite {
     width: 100%;
     height: 100%;
-    background-color: #4a90e2;
+    background-image: url('/DocteurOcean/favicon.ico');
+    background-size: cover;
+    background-position: center;
     border-radius: 50%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 87, 255, 0.1);
     transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid #fff;
 }
 
 .doctor.walking .doctor-sprite {
-    animation: walk 0.6s infinite alternate;
+    animation: walk 0.6s infinite alternate-reverse ease-in-out;
+    border: 3px solid rgba(0, 87, 255, 0.3);
 }
 
 .doctor.healing .doctor-sprite {
-    background-color: #2ecc71;
-    animation: pulse 1s infinite;
+    background-color: rgba(46, 204, 113, 0.2);
+    animation: pulse 1.2s infinite ease-in-out;
+    border: 3px solid rgba(46, 204, 113, 0.6);
 }
 
 .doctor.dreaming .doctor-sprite {
-    background-color: #9b59b6;
-    animation: float 2s infinite ease-in-out;
+    background-color: rgba(155, 89, 182, 0.2);
+    animation: float 2.5s infinite ease-in-out;
+    border: 3px solid rgba(155, 89, 182, 0.6);
 }
 
 .healing-effect {
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
     border-radius: 50%;
-    border: 2px solid #2ecc71;
-    animation: healing 1.5s infinite;
+    border: 3px solid rgba(46, 204, 113, 0.6);
+    animation: healing 1.5s infinite ease-in-out;
 }
 
+.doctor:hover .doctor-sprite {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15),
+    0 8px 16px rgba(0, 87, 255, 0.15);
+}
+
+/* Animations */
 @keyframes walk {
     0% {
-        transform: translateY(0);
+        transform: translateY(0) rotate(0deg);
     }
-    50% {
-        transform: translateY(-5px) scaleY(0.95);
+    25% {
+        transform: translateY(-6px) rotate(-3deg);
+    }
+    75% {
+        transform: translateY(-4px) rotate(3deg);
     }
     100% {
-        transform: translateY(0);
+        transform: translateY(0) rotate(0deg);
     }
 }
 
 @keyframes pulse {
     0% {
         transform: scale(1);
-        box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
+        box-shadow: 0 8px 16px rgba(46, 204, 113, 0.2);
     }
     50% {
         transform: scale(1.1);
-        box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
+        box-shadow: 0 12px 24px rgba(46, 204, 113, 0.4);
     }
     100% {
         transform: scale(1);
-        box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
+        box-shadow: 0 8px 16px rgba(46, 204, 113, 0.2);
     }
 }
 
 @keyframes float {
-    0%, 100% {
-        transform: translateY(0);
+    0% {
+        transform: translateY(0) rotate(0deg);
     }
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-12px) rotate(5deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
     }
 }
 
@@ -81,13 +102,46 @@
     0% {
         transform: scale(1);
         opacity: 0.8;
+        border-color: rgba(46, 204, 113, 0.6);
     }
     50% {
-        transform: scale(1.2);
+        transform: scale(1.3);
         opacity: 0;
+        border-color: rgba(46, 204, 113, 0.2);
     }
     100% {
         transform: scale(1);
         opacity: 0.8;
+        border-color: rgba(46, 204, 113, 0.6);
+    }
+}
+
+/* État actif */
+.doctor:active .doctor-sprite {
+    transform: scale(0.95);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 87, 255, 0.1);
+}
+
+/* Effets de particules pour le mode healing */
+.healing-particles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: rgba(46, 204, 113, 0.6);
+    animation: particles 1s linear infinite;
+}
+
+@keyframes particles {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -150%) scale(0);
+        opacity: 0;
     }
 }

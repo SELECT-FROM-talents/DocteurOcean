@@ -197,10 +197,10 @@ const PlasticWasteGame: React.FC<PlasticWasteGameProps> = ({ onGameEnd }) => {
 
     const getWasteEmoji = (type: WasteItem['type']) => {
         switch (type) {
-            case 'bottle': return '🍾';
+            case 'bottle': return '🥤';
             case 'bag': return '🛍️';
-            case 'container': return '📦';
-            default: return '🗑️';
+            case 'container': return '🥡';
+            default: return '♻️';
         }
     };
 

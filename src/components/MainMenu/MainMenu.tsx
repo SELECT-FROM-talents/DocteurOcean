@@ -4,6 +4,9 @@ import confetti from 'canvas-confetti';
 import './MainMenu.css';
 import {useEffect, useState} from "react";
 
+// Définir le chemin de base en fonction de l'environnement
+const BASE_PATH = import.meta.env.MODE === 'production' ? '/DocteurOcean' : '';
+
 export const MainMenu = () => {
     const { dispatch } = useGame();
 
@@ -58,7 +61,7 @@ export const MainMenu = () => {
     };
 
     const handleRedirectToErgonomie = () => {
-        window.location.href = '/DocteurOcean/src/components/Defis/ergonomie.html';
+        window.location.href = `${BASE_PATH}/ergonomie/ergonomie.html`;
     };
 
     return (
