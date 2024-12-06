@@ -21,6 +21,10 @@ export const MainMenu = () => {
         dispatch({ type: 'SET_SCENE', payload: GameScene.CREDITS });  // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
     };
 
+    const handleRedirectToErgonomie = () => {
+        window.location.href = '/DocteurOcean/src/components/Defis/ergonomie.html';
+    };
+
     return (
         <div className="main-menu-container">
             <div className="menu-content">
@@ -87,6 +91,12 @@ export const MainMenu = () => {
                         onClick={handleShowCredits}
                     >
                         Crédits
+                    </button>
+                    <button
+                        className="menu-button ergonomie"
+                        onClick={handleRedirectToErgonomie}
+                    >
+                        Ergonomie
                     </button>
                 </div>
             </div>

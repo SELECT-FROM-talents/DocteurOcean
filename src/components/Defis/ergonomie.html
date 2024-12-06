@@ -6,29 +6,45 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="form-container">
-  <form id="gameValidationForm">
-    <div class="form-group">
-      <input type="text" id="nomInput" placeholder="Nom" required>
-    </div>
-    <div class="form-group">
-      <input type="email" id="emailInput" placeholder="Email" required>
-    </div>
-    <div class="form-group">
-      <textarea id="messageTextarea" placeholder="Message" required></textarea>
-    </div>
-    <div class="form-group">
-      <input type="tel" id="phoneInput" placeholder="Numéro de téléphone" required>
-    </div>
-    <button type="submit">Soumettre</button>
-  </form>
-</div>
+<div class="container">
+  <header class="header">
+    <h1>L'ergonomie : simplifier pour mieux vivre</h1>
+    <p>Découvrez comment l'ergonomie peut améliorer votre qualité de vie quotidienne à travers des jeux interactifs.</p>
+  </header>
 
-<div id="gameModal" class="game-modal" style="display:none;">
-  <div class="game-content" id="gameContent">
+  <div class="form-container">
+    <form id="gameValidationForm">
+      <div class="form-group">
+        <label for="nomInput">Nom</label>
+        <input type="text" id="nomInput" placeholder="Votre nom">
+      </div>
+
+      <div class="form-group">
+        <label for="emailInput">Email</label>
+        <input type="email" id="emailInput" placeholder="votre@email.com">
+      </div>
+
+      <div class="form-group">
+        <label for="phoneInput">Téléphone</label>
+        <input type="tel" id="phoneInput" placeholder="Votre numéro">
+      </div>
+
+      <div class="form-group">
+        <label for="messageTextarea">Message</label>
+        <textarea id="messageTextarea" placeholder="Votre message"></textarea>
+      </div>
+
+      <button type="submit">Envoyer</button>
+    </form>
   </div>
 </div>
 
-<script src="script.js"></script>
+<div id="gameModal" class="game-modal" style="display: none;">
+  <div id="gameContent" class="game-content">
+    <!-- Le contenu du jeu sera inséré ici dynamiquement -->
+  </div>
+</div>
 </body>
+
+<script src="script.js"></script>
 </html>
