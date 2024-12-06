@@ -1,51 +1,16 @@
-@font-face {
-  font-family: "njnaruto";
-  src: url("/public/fonts/njnaruto.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-#app {
-  text-align: center;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  position: relative;
-  height: 100vh;
-}
-
 .logo {
-  display: inline-block;
-  width: 100px;
-  height: auto;
+  position: absolute;
+  transition: all 5s ease;
   cursor: pointer;
-  user-select: none;
+  z-index: 999;
+  opacity: 1; /* Par défaut, l'élément est visible */
+}
+
+.logo.hidden {
+  opacity: 0; /* Classe pour cacher le logo */
 }
 
 .logo-image {
-  width: 100%;
+  width: 80px;
   height: auto;
-}
-
-pre {
-  font-size: 7px;
-  color: #333;
-  text-align: center;
-}
-
-.logo-text {
-  font-size: 20px;
-  font-weight: bold;
-  color: #fa7522;
-  font-family: "njnaruto", sans-serif;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-}
-
-@keyframes confettiAnimation {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(3);
-  }
 }
