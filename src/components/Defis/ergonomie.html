@@ -9,29 +9,29 @@
 <div class="container">
   <header class="header">
     <h1>L'ergonomie : simplifier pour mieux vivre</h1>
-    <p>Découvrez comment l'ergonomie peut améliorer votre qualité de vie quotidienne à travers des jeux interactifs.</p>
+    <p>Découvrez comment l'ergonomie peut améliorer votre qualité de vie quotidienne à travers ce formulaire.</p>
   </header>
 
   <div class="form-container">
     <form id="gameValidationForm">
       <div class="form-group">
         <label for="nomInput">Nom</label>
-        <input type="text" id="nomInput" placeholder="Votre nom">
+        <input type="text" id="nomInput" class="no-paste" placeholder="Votre nom">
       </div>
 
       <div class="form-group">
         <label for="emailInput">Email</label>
-        <input type="email" id="emailInput" placeholder="votre@email.com">
+        <input type="email" id="emailInput" class="no-paste" placeholder="votre@email.com">
       </div>
 
       <div class="form-group">
         <label for="phoneInput">Téléphone</label>
-        <input type="tel" id="phoneInput" placeholder="Votre numéro">
+        <input type="tel" id="phoneInput" class="no-paste" placeholder="Votre numéro" required inputmode="numeric" pattern="[0-9]*">
       </div>
 
       <div class="form-group">
         <label for="messageTextarea">Message</label>
-        <textarea id="messageTextarea" placeholder="Votre message"></textarea>
+        <textarea id="messageTextarea" class="no-paste" placeholder="Votre message"></textarea>
       </div>
 
       <button type="submit">Envoyer</button>
@@ -41,7 +41,6 @@
 
 <div id="gameModal" class="game-modal" style="display: none;">
   <div id="gameContent" class="game-content">
-    <!-- Le contenu du jeu sera inséré ici dynamiquement -->
   </div>
 </div>
 </body>

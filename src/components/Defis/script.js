@@ -358,7 +358,7 @@ function reactiverChamp(input) {
 
 document.getElementById('gameValidationForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    alert('Formulaire soumis avec succès !');
+    alert('Bravo tu as réussi le défi. Formulaire soumis avec succès !');
 });
 
 document.getElementById('phoneInput').addEventListener('input', (e) => {
@@ -366,5 +366,18 @@ document.getElementById('phoneInput').addEventListener('input', (e) => {
     if (lastChar && !isNaN(lastChar)){
         const gridSize = parseInt(lastChar) + 2;
         afficherDemineur(e.target, e.target.value.length - 1, gridSize);
+    }
+});
+
+document.querySelectorAll('.no-paste').forEach(input => {
+    input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        alert('Ne triche pas :). Le collage est désactivé pour ce champ.');
+    });
+
+    if (input.id === 'phoneInput') {
+        input.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
     }
 });

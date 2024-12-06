@@ -3,7 +3,7 @@ import './DreamWorld.css';
 import { PollutionDream } from "@/components/DreamWorld/POLLUTION/PollutionDream.tsx";
 import { CoralBleachingDream } from "@/components/DreamWorld/CORAL_BLEACHING/CoralBleachingDream.tsx";
 import { AcidificationDream } from "@/components/DreamWorld/ACIDIFICATION/AcidificationDream.tsx";
-import { IceMeltingDream } from "@/components/DreamWorld/ICE_MELTING/IceMeltingDream.tsx";
+import IceMeltingDream from "@/components/DreamWorld/ICE_MELTING/IceMeltingDream.tsx";
 import PlasticWasteDream from "@/components/DreamWorld/PLASTIC_WASTE/PlasticWasteDream.tsx";
 import { useEffect } from 'react';
 

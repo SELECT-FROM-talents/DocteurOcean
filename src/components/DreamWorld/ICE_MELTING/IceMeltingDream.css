@@ -1,0 +1,30 @@
+/* src/components/DreamWorld/PLASTIC_WASTE/PlasticWasteDream.css */
+.dialogue {
+    color: #1a1a1a;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.dialogue p {
+    margin-bottom: 10px;
+}
+
+.plastic-waste-game {
+    color: #1a1a1a;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.plastic-waste-game h3 {
+    margin-bottom: 10px;
+}
+
+.plastic-waste-game p {
+    margin-bottom: 10px;
+}
