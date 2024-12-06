@@ -1,0 +1,16 @@
+.grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
