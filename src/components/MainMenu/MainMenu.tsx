@@ -1,24 +1,60 @@
+import React, { useState, useEffect } from 'react';
 import { useGame } from '@/contexts/GameContext';
 import { GameScene } from '@/types/game.types';
+import confetti from 'canvas-confetti';
 import './MainMenu.css';
 
 export const MainMenu = () => {
     const { dispatch } = useGame();
 
+    const [xPos, setXPos] = useState<number>(
+        Math.floor(Math.random() * (window.innerWidth - 100))
+    );
+    const [yPos, setYPos] = useState<number>(
+        Math.floor(Math.random() * (window.innerHeight - 100))
+    );
+    const [currentLogo, setCurrentLogo] = useState<string>('lyreco1.png');
+    const [visible, setVisible] = useState<boolean>(true);
+
+    const logos = ['lyreco1.png', 'lyreco2.png', 'lyreco3.png'] as const;
+
+    const moveLogo = () => {
+        const maxX = window.innerWidth - 100;
+        const maxY = window.innerHeight - 100;
+        setXPos(Math.random() * maxX);
+        setYPos(Math.random() * maxY);
+    };
+
+    const getRandomLogo = (): string => {
+        return logos[Math.floor(Math.random() * logos.length)] || 'lyreco1.png';
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setVisible(false);
+            setTimeout(() => {
+                setCurrentLogo(getRandomLogo());
+                moveLogo();
+                setVisible(true);
+            }, 500);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
     const handleStartGame = () => {
-        dispatch({ type: 'SET_SCENE', payload: GameScene.CLINIC });  // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
+        dispatch({ type: 'SET_SCENE', payload: GameScene.CLINIC });
     };
 
     const handleShowTutorial = () => {
-        dispatch({ type: 'SET_SCENE', payload: GameScene.TUTORIAL });  // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
+        dispatch({ type: 'SET_SCENE', payload: GameScene.TUTORIAL });
     };
 
     const handleShowAbout = () => {
-        dispatch({ type: 'SET_SCENE', payload: GameScene.ABOUT });  // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
+        dispatch({ type: 'SET_SCENE', payload: GameScene.ABOUT });
     };
 
     const handleShowCredits = () => {
-        dispatch({ type: 'SET_SCENE', payload: GameScene.CREDITS });  // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
+        dispatch({ type: 'SET_SCENE', payload: GameScene.CREDITS });
     };
 
     const handleRedirectToErgonomie = () => {
@@ -38,8 +74,8 @@ export const MainMenu = () => {
                     >
                         Commencer le Voyage
                         <span className="button-description">
-                            Explorez votre monde intérieur et guérissez-vous
-                        </span>
+              Explorez votre monde intérieur et guérissez-vous
+            </span>
                     </button>
                 </div>
 
@@ -50,8 +86,8 @@ export const MainMenu = () => {
                     >
                         Comment Jouer
                         <span className="button-description">
-                            Découvrez vos pouvoirs et apprenez à naviguer dans vos rêves
-                        </span>
+              Découvrez vos pouvoirs et apprenez à naviguer dans vos rêves
+            </span>
                     </button>
 
                     <button
@@ -60,26 +96,12 @@ export const MainMenu = () => {
                     >
                         À Propos
                         <span className="button-description">
-                            Comprendre la métaphore entre l'océan et votre santé
-                        </span>
+              Comprendre la métaphore entre l'océan et votre santé
+            </span>
                     </button>
                 </div>
 
-                <p> Dans Docteur Océan, vous incarnez un médecin pas comme les autres. Votre mission : sauver les océans
-                    en soignant des patients dont les maux représentent les problèmes qui menacent nos écosystèmes
-                    marins.</p>
-                <p>Quand un patient arrive dans votre cabinet avec un problème aux poumons, c'est en réalité une
-                    barrière de corail qui se dégrade. Pour le guérir, vous l'envoyez dans le DreamWorld, un univers
-                    onirique où son corps devient un vaste océan. En accomplissant différentes tâches dans ce monde,
-                    vous pourrez soigner le patient et par la même occasion, sensibiliser les joueurs aux enjeux
-                    cruciaux de la pollution marine.</p>
-                <p>Docteur Océan est plus qu'un jeu, c'est une expérience ludique et pédagogique qui révèle les liens
-                    étroits entre la santé des hommes et celle de nos océans. Préparez-vous à une plongée à la fois
-                    surprenante et engagée, où vos talents de médecin serviront une cause essentielle : la protection de
-                    la vie sous-marine et de sa biodiversité.</p>
-                <p>Avec son gameplay original et son propos écologique fort, Docteur Océan embarquera petits et grands
-                    dans une aventure aussi amusante qu'enrichissante. Alors, prêts à enfiler votre blouse blanche pour
-                    devenir un défenseur des océans ?</p>
+                <p> Dans Docteur Océan, vous incarnez un médecin pas comme les autres...</p>
 
                 <div className="menu-footer">
                     <div className="ocean-facts">
@@ -99,6 +121,22 @@ export const MainMenu = () => {
                         Ergonomie
                     </button>
                 </div>
+            </div>
+
+            {/* Logo dans le menu principal */}
+            <div
+                style={{
+                    left: `${xPos}px`,
+                    top: `${yPos}px`,
+                }}
+                className={`logo ${!visible ? 'hidden' : ''}`}
+                onClick={() => confetti()}
+            >
+                <img
+                    src={`${currentLogo}`}
+                    alt="Logo Lyreco"
+                    className="logo-image"
+                />
             </div>
         </div>
     );

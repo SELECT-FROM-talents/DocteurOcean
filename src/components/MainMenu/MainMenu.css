@@ -146,3 +146,21 @@
         flex-direction: column;
     }
 }
+
+
+.logo {
+    position: absolute;
+    transition: all 5s ease;
+    cursor: pointer;
+    z-index: 999;
+    opacity: 1; /* Par défaut, l'élément est visible */
+}
+
+.logo.hidden {
+    opacity: 0; /* Classe pour cacher le logo */
+}
+
+.logo-image {
+    width: 70px;
+    height: auto;
+}
