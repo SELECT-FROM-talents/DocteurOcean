@@ -174,20 +174,20 @@ const CoralBreathingGame = () => {
 
     const endDialogue = {
         doctor: [
-            `Je vois que vous avez réussi à atteindre un score de ${calculateFinalScore(score)}%. C'est un excellent indicateur de votre synchronisation avec les coraux.`,
+            `Votre score final de ${calculateFinalScore(score)}% montre à quel point vous avez réussi à synchroniser votre respiration avec le rythme des coraux.`,
             calculateFinalScore(score) >= SUCCESS_THRESHOLD
-                ? "La transformation est remarquable. Votre respiration s'est parfaitement accordée au rythme des coraux."
-                : "C'est un bon début. La synchronisation, comme la préservation des coraux, est un processus qui demande de la pratique.",
-            "Chaque respiration que vous avez synchronisée représente un pas vers l'harmonie, mais aussi un geste pour nos coraux réels.",
-            "Cette expérience nous montre que la santé des coraux et la nôtre sont intimement liées."
+                ? "C'est un excellent résultat. Saviez-vous que la respiration profonde et lente, comme celle des coraux, peut réduire le stress et améliorer la fonction cardiovasculaire ?"
+                : "C'est un début prometteur. Tout comme les coraux dépendent d'une eau propre et riche en oxygène, notre santé dépend d'une respiration saine.",
+            "En fait, la Grande Barrière de Corail, qui abrite une incroyable diversité de vie marine, a perdu plus de la moitié de ses coraux depuis 1995 en raison du stress environnemental.",
+            "Mais il y a de l'espoir. En prenant soin de notre respiration et en réduisant notre impact sur l'environnement, nous pouvons favoriser notre bien-être et celui des écosystèmes marins."
         ],
         patient: [
-            `Je me sens différent après avoir respiré avec les coraux...`,
+            "Je ne réalisais pas à quel point notre respiration et la santé des coraux étaient liées...",
             calculateFinalScore(score) >= SUCCESS_THRESHOLD
-                ? "C'est incroyable comme je me sens plus calme, plus en phase avec l'océan."
-                : "Je comprends qu'il me faudra plus de pratique pour atteindre une synchronisation parfaite.",
-            "Je réalise maintenant l'impact que peut avoir notre respiration sur les coraux.",
-            "Merci, Docteur. Je veillerai désormais à respirer en harmonie avec les coraux comme je prends soin de ma santé."
+                ? "C'est fascinant de penser que nous pouvons tirer des leçons de la respiration des coraux pour améliorer notre propre santé."
+                : "Il est clair que nous devons être plus attentifs à notre respiration et à l'impact de nos actions sur l'environnement marin.",
+            "C'est alarmant d'apprendre que la Grande Barrière de Corail a déjà perdu plus de la moitié de ses coraux. Nous devons agir maintenant.",
+            "Vous avez raison, Docteur. En prenant soin de nous-mêmes et de notre environnement, nous pouvons créer un avenir plus sain pour tous, des récifs coralliens aux êtres humains."
         ]
     };
 
