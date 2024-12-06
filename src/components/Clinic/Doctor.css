@@ -11,7 +11,7 @@
 .doctor-sprite {
     width: 100%;
     height: 100%;
-    background-image: url('public/favicon.ico');
+    background-image: url('/DocteurOcean/favicon.ico');
     background-size: cover;
     background-position: center;
     border-radius: 50%;
