@@ -23,8 +23,8 @@ const CoralBreathingGame: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) 
             // Supprime le "Parfait !" après 500 ms
             setTimeout(() => {
                 setFeedbacks((prev) => prev.slice(1));
-            }, 500);
-        }, 750);
+            }, 250);
+        }, 500);
 
         return () => clearInterval(interval);
     }, [letters, fullName, timer]);
