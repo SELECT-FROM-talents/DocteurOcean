@@ -14,7 +14,6 @@ export const Clinic = () => {
     const [dialogStep, setDialogStep] = useState(0);
     const [isMoving, setIsMoving] = useState(false);
 
-    // Gestion des clics dans la scène
     const handleSceneClick = useCallback((position: Position) => {
         if (state.isPaused || isMoving) return;
 
@@ -88,11 +87,9 @@ export const Clinic = () => {
             }
         ];
 
-        // S'assurer qu'on retourne toujours soit un DialogContent soit null
         return dialogs[dialogStep] ?? null;
     }, [selectedPatient, dialogStep]);
 
-    // Génération périodique de patients
     useEffect(() => {
         if (state.waitingPatients.length >= 5) return;
 
@@ -109,17 +106,9 @@ export const Clinic = () => {
     return (
         <div className="clinic-scene">
             <div className="clinic-background">
-                <div className="left-panel">
-                    <div className="reception-desk">
-                        <h3>Clinique du Dr. Ocean</h3>
-                        <p>Un voyage intérieur vers la guérison</p>
-                    </div>
-
-                    <WaitingRoom
-                        patients={state.waitingPatients}
-                        onPatientClick={handlePatientClick}
-                        selectedPatient={selectedPatient}
-                    />
+                <div className="clinic-header">
+                    <h3>Clinique du Dr. Ocean</h3>
+                    <p>Un voyage intérieur vers la guérison</p>
                 </div>
 
                 <div className="main-area" onClick={handleClick}>
@@ -128,11 +117,16 @@ export const Clinic = () => {
                         state={state.doctor.state}
                         isMoving={isMoving}
                     />
+                    <WaitingRoom
+                        patients={state.waitingPatients}
+                        onPatientClick={handlePatientClick}
+                        selectedPatient={selectedPatient}
+                    />
                 </div>
 
                 {selectedPatient && dialogStep > 0 && (
                     <PatientDialog
-                        dialog={getDialogContent()} // getDialogContent() retourne maintenant toujours DialogContent | null
+                        dialog={getDialogContent()}
                         onContinue={handleDialogProgress}
                         patient={selectedPatient}
                         isLastStep={dialogStep === 3}
@@ -143,7 +137,7 @@ export const Clinic = () => {
                     <div className="score">Score: {state.score}</div>
                     <div className="stats">
                         Patients guéris: {state.stats.patientsHealed}
-                        <br />
+                        <br/>
                         Temps: {Math.floor(state.stats.timeElapsed / 60)}:
                         {(state.stats.timeElapsed % 60).toString().padStart(2, '0')}
                     </div>

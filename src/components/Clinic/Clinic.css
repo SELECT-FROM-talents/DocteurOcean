@@ -1,144 +1,120 @@
+/* Base layout */
 .clinic-scene {
     width: 100%;
     height: 100vh;
     display: flex;
-    background-color: #f0f2f5;
+    background-color: #f0f7ff;
+    font-family: 'Inter', sans-serif;
 }
 
 .clinic-background {
     flex: 1;
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    grid-template-rows: auto 1fr;
-    padding: 20px;
-    gap: 20px;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    gap: 24px;
     height: 100vh;
+    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url('public/clinic.png');
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(8px);
 }
 
-/* Zone gauche avec la réception et la salle d'attente */
-.left-panel {
-    grid-column: 1;
-    grid-row: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Réception */
-.reception-desk {
-    background: white;
+/* Header styling */
+.clinic-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 87, 255, 0.08);
+    border: 1px solid rgba(0, 87, 255, 0.1);
 }
 
-.reception-desk h3 {
-    color: #2c3e50;
-    font-size: 1.5em;
-    margin-bottom: 8px;
+.clinic-header h3 {
+    color: #1a365d;
+    font-size: 1.75em;
+    margin-bottom: 12px;
+    font-weight: 700;
+    background: linear-gradient(45deg, #1a365d, #2b6cb0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.reception-desk p {
-    color: #666;
-    font-size: 0.9em;
+.clinic-header p {
+    color: #4a5568;
+    font-size: 1em;
+    line-height: 1.5;
 }
 
-/* Salle d'attente */
-.waiting-room {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Zone principale */
+/* Main area styling */
 .main-area {
-    grid-column: 2;
-    grid-row: 1 / -1;
-    background: white;
-    border-radius: 12px;
+    flex: 1;
     position: relative;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 255, 0.95) 100%);
+    border-radius: 20px;
     overflow: hidden;
+    border: 1px solid rgba(0, 87, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 87, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
 }
 
-/* Doctor */
-.doctor {
-    position: absolute;
-    z-index: 10;
-    transition: all 0.3s ease-out;
-}
-
-/* Game UI */
+/* Game UI styling */
 .game-ui {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: white;
-    padding: 15px 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 255, 0.95) 100%);
+    padding: 16px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 87, 255, 0.12);
+    border: 1px solid rgba(0, 87, 255, 0.1);
+    backdrop-filter: blur(8px);
+    z-index: 10;
 }
 
 .score, .stats {
     font-size: 1.1em;
-    color: #2c3e50;
+    color: #2d3748;
+    line-height: 1.6;
+}
+
+.score {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2b6cb0;
 }
 
 /* Dialog Container */
 .dialog-container {
     position: fixed;
-    bottom: 30px;
-    left: 340px; /* Ajusté pour tenir compte du panneau gauche */
-    right: 20px;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
     max-width: 800px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.97) 0%, rgba(248, 250, 255, 0.97) 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 87, 255, 0.15);
     z-index: 100;
-    padding: 20px;
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .clinic-background {
-        grid-template-columns: 280px 1fr;
-    }
-
-    .dialog-container {
-        left: 300px;
-    }
-}
-
-@media (max-width: 768px) {
-    .clinic-background {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto 1fr;
-    }
-
-    .left-panel {
-        grid-row: auto;
-    }
-
-    .dialog-container {
-        left: 20px;
-        right: 20px;
-        bottom: 20px;
-    }
+    padding: 24px;
+    border: 1px solid rgba(0, 87, 255, 0.1);
+    backdrop-filter: blur(8px);
 }
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .clinic-scene {
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.4s ease-out;
 }
