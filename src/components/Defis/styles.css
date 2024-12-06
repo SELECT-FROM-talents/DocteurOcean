@@ -9,7 +9,6 @@
     --warning-color: #eab308;
 }
 
-/* Styles de base */
 * {
     margin: 0;
     padding: 0;
@@ -26,7 +25,6 @@ body {
     padding: 2rem;
 }
 
-/* En-tête et conteneur */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -52,7 +50,6 @@ body {
     margin: 0 auto;
 }
 
-/* Styles du formulaire */
 .form-container {
     background: white;
     border-radius: 1rem;
@@ -62,7 +59,6 @@ body {
     margin: 0 auto;
 }
 
-/* Modal des jeux */
 .game-modal {
     position: fixed;
     top: 0;
@@ -97,9 +93,6 @@ body {
     margin-bottom: 1.5rem;
 }
 
-/* Styles spécifiques aux jeux */
-
-/* Pierre-Feuille-Ciseaux */
 .game-buttons {
     display: flex;
     gap: 1rem;
@@ -126,7 +119,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Morpion */
 #morpionGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -162,7 +154,6 @@ body {
     color: var(--danger-color);
 }
 
-/* Démineur */
 #demineurGrid {
     display: grid;
     gap: 0.5rem;
@@ -201,7 +192,6 @@ body {
     color: white;
 }
 
-/* Formulaire */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -222,6 +212,13 @@ body {
     font-size: 1rem;
     transition: all 0.3s ease;
     background: var(--bg-color);
+}
+
+.form-group textarea {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 100px;
+    max-height: 200px;
 }
 
 .form-group input:focus,
@@ -250,7 +247,6 @@ button[type="submit"]:hover {
     transform: translateY(-2px);
 }
 
-/* Media Queries */
 @media (max-width: 640px) {
     body {
         padding: 1rem;
