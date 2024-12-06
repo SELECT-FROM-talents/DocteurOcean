@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import { useGame } from '@/contexts/GameContext';
 import { GameScene } from '@/types/game.types';
 import confetti from 'canvas-confetti';
 import './MainMenu.css';
+import {useEffect, useState} from "react";
 
 export const MainMenu = () => {
     const { dispatch } = useGame();
