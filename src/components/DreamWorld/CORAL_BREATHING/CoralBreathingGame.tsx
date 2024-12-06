@@ -209,46 +209,31 @@ const CoralBreathingGame = () => {
             : endDialogue.patient[speakerIndex];
 
         return (
-            <div className="coral-breathing-game" style={{ position: 'relative' }}>
-                <div className="game-over" style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '2rem',
-                    background: 'white',
-                    borderRadius: '8px',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                }}>
-                    <div style={{
-                        marginBottom: '1rem',
-                        padding: '1rem',
-                        backgroundColor: isDoctorSpeaking ? '#e3f2fd' : '#f5f5f5',
-                        borderRadius: '8px',
-                        width: '100%'
-                    }}>
-                        <p style={{
-                            fontWeight: 'bold',
-                            marginBottom: '0.5rem',
-                            color: isDoctorSpeaking ? '#1976d2' : '#616161'
-                        }}>
-                            {isDoctorSpeaking ? 'Dr. Océan:' : 'Patient:'}
-                        </p>
-                        <p>{dialogueText}</p>
+            <div className="coral-breathing-game">
+                <div className="game-over">
+                    <div className="dialogue-box">
+                        <div
+                            style={{
+                                backgroundColor: isDoctorSpeaking ? '#e3f2fd' : '#f5f5f5',
+                                padding: '1.5rem',
+                                borderRadius: '8px',
+                                marginBottom: '1rem'
+                            }}
+                        >
+                            <p className="speaker">
+                                {isDoctorSpeaking ? 'Dr. Océan:' : 'Patient:'}
+                            </p>
+                            <p className="text">
+                                {dialogueText}
+                            </p>
+                        </div>
+                        <button
+                            className="next-button"
+                            onClick={handleNextDialogue}
+                        >
+                            {currentDialogueIndex < totalDialogues - 1 ? 'Suivant' : 'Retour à la clinique'}
+                        </button>
                     </div>
-                    <button
-                        onClick={handleNextDialogue}
-                        style={{
-                            padding: '0.5rem 1rem',
-                            backgroundColor: '#2196f3',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        {currentDialogueIndex < totalDialogues - 1 ? 'Suivant' : 'Retour à la clinique'}
-                    </button>
                 </div>
             </div>
         );
