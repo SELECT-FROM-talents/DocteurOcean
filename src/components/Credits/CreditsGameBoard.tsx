@@ -1,33 +1,29 @@
-import React, { useState } from 'react';
-import { Clinic } from './CreditsClinic';
-import { DreamWorld } from '../DreamWorld/DreamWorld';
-import './CreditsGameBoard.css';
+import React, { useState } from "react";
+import { Clinic } from "./CreditsClinic";
+import CreditsIMTeo from "./CreditsIMTeo";
+import CreditsPWLeon from "./CreditsPWLeon";
+import "./CreditsGameBoard.css";
 
 export const CreditsGameBoard = () => {
-    const [currentScene, setCurrentScene] = useState<'CLINIC' | 'DREAM_WORLD'>('CLINIC');
-    const [startTimer, setStartTimer] = useState(false);
-
-    // Activer le timer une fois le dialogue terminé
-    React.useEffect(() => {
-        if (startTimer) {
-            const timer = setTimeout(() => {
-                setCurrentScene('DREAM_WORLD');
-            }, 500); // 5000 ms avant de changer de scène
-
-            return () => clearTimeout(timer);
-        }
-    }, [startTimer]);
+    const [currentScene, setCurrentScene] = useState<"CLINIC" | "CREDITS_IM_TEO" | "CREDITS_PW_LEON">("CLINIC");
 
     const handleDialogEnd = () => {
-        setStartTimer(true); // Déclenche le timer après le dialogue
+        setTimeout(() => setCurrentScene("CREDITS_IM_TEO"), 500); // Transition après 500ms
+    };
+
+    const handleCreditsIMTeoEnd = () => {
+        setCurrentScene("CREDITS_PW_LEON");
     };
 
     const renderScene = () => {
+        console.log("Rendering scene:", currentScene);
         switch (currentScene) {
-            case 'CLINIC':
+            case "CLINIC":
                 return <Clinic onDialogEnd={handleDialogEnd} />;
-            case 'DREAM_WORLD':
-                return <DreamWorld />;
+            case "CREDITS_IM_TEO":
+                return <CreditsIMTeo onGameEnd={handleCreditsIMTeoEnd} />;
+            case "CREDITS_PW_LEON":
+                return <CreditsPWLeon />;
             default:
                 return <div>Scène inconnue</div>;
         }
