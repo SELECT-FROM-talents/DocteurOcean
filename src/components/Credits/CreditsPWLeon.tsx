@@ -13,7 +13,7 @@ const getRandomPosition = () => {
     return { x, y };
 };
 
-const PlasticWasteGame: React.FC = () => {
+const PlasticWasteGame: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) => {
     const [letters, setLetters] = useState<{ id: string; x: number; y: number; char: string }[]>([]);
     const [teleporting, setTeleporting] = useState(false); // Contrôle le début de la téléportation
     const gameAreaRef = useRef<HTMLDivElement>(null);
@@ -52,10 +52,15 @@ const PlasticWasteGame: React.FC = () => {
             setTeleporting(true);
         }, 3000);
 
+        const switchScene = setTimeout(() => {
+            onGameEnd();
+        }, 4500)
+
         return () => {
             clearTimeout(timer1);
             clearTimeout(timer2);
             clearTimeout(teleportTimer);
+            clearTimeout(switchScene);
         };
     }, []);
 

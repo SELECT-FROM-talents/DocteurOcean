@@ -8,6 +8,7 @@ const CreditsIMTeo: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) => {
     const [grid, setGrid] = useState<string[][]>([]);
     const [timerActive, setTimerActive] = useState(false); // Pour activer le timer
     const [timeLeft, setTimeLeft] = useState(5); // Temps avant l'action finale (5 secondes)
+    timeLeft;
 
     const T_POSITION = { row: 4, col: 3 };
     const É_POSITION = { row: 4, col: 4 };
@@ -41,6 +42,7 @@ const CreditsIMTeo: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) => {
                 prevGrid.map((row, rowIndex) =>
                     row.map((cell, colIndex) => {
                         if (cell.startsWith("white-red-")) {
+                            // @ts-ignore
                             const level = parseInt(cell.split("-")[2]);
                             if (level >= 10) {
                                 return "blue";
@@ -88,7 +90,9 @@ const CreditsIMTeo: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) => {
             [0, 1],
         ];
         return directions.some(([dx, dy]) => {
+            // @ts-ignore
             const newRow = row + dx;
+            // @ts-ignore
             const newCol = col + dy;
             return grid[newRow]?.[newCol] === "blue";
         });
@@ -98,6 +102,7 @@ const CreditsIMTeo: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) => {
         if (cell === "blue") return "#0000FF";
         if (cell === "white") return "#FFFFFF";
         if (cell.startsWith("white-red-")) {
+            // @ts-ignore
             const level = parseInt(cell.split("-")[2]);
             const red = Math.min(255, level * 25);
             return `rgb(${red}, ${255 - red}, 255)`;
