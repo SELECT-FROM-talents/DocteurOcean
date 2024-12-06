@@ -1,16 +1,18 @@
 import { useGame } from '@/contexts/GameContext';
 import { GameScene } from '@/types/game.types';
+import { Clinic } from './CreditsClinic';
 import './Credits.css';
 
 export const Credits = () => {
     const { dispatch } = useGame();
 
     const handleBack = () => {
-        dispatch({ type: 'CHANGE_SCENE', payload: GameScene.MAIN_MENU });
+        dispatch({ type: 'SET_SCENE', payload: GameScene.MAIN_MENU });
     };
 
     return (
         <div className="credits-container">
+            <Clinic onDialogEnd={handleBack} />
             <div className="credits-content">
                 <h1>Crédits</h1>
 

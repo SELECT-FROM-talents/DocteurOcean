@@ -1,6 +1,5 @@
 import { GameProvider } from './contexts/GameContext';
 import { GameBoard } from './components/GameBoard/GameBoard';
-import { CreditsGameBoard} from "@/components/Credits/CreditsGameBoard.tsx";
 import './App.css';
 
 const App = () => {

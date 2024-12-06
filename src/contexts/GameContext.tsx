@@ -1,48 +1,32 @@
-import React, { createContext, useReducer, useContext, ReactNode } from 'react';
-import {
-    GameState,
-    GameScene,
-    Patient,
-    Doctor,
-    CharacterState,
-    DreamPower, Position
-} from '@/types/game.types';
+import React, { createContext, useReducer, useContext, ReactNode, Dispatch } from 'react';
+import {GameState, GameScene, CharacterState} from '@/types/game.types';
+import { GameAction } from '@/types/gameActions.types';
 
-type GameAction =
-    | { type: 'CHANGE_SCENE'; payload: GameScene }
-    | { type: 'SELECT_ACTIVE_PATIENT'; payload: Patient }
-    | { type: 'MOVE_DOCTOR'; payload: Position }
-    | { type: 'UPDATE_PATIENT_PROGRESS'; payload: { progress: number } }
-    | { type: 'USE_DREAM_POWER'; payload: { power: DreamPower } }
-    | { type: 'UPDATE_OCEAN_SOLUTION'; payload: { solutionId: string; isCompleted: boolean } }
-    | { type: 'ADD_WAITING_PATIENT'; payload: Patient }
-    | { type: 'UPDATE_SCORE'; payload: number }
-    | { type: 'TOGGLE_PAUSE' }
-    | { type: 'TOGGLE_DREAM_WORLD' }
-    | { type: 'SHOW_TUTORIAL' }
-    | { type: 'SHOW_CREDITS' }
-    | { type: 'SHOW_ABOUT' }
-    | { type: 'SET_DREAM_STATE'; payload: boolean };
+// Type pour le contexte
+interface GameContextType {
+    state: GameState;
+    dispatch: Dispatch<GameAction>;
+}
 
-const initialDoctor: Doctor = {
-    id: 'doctor-1',
-    type: 'DOCTOR',
-    name: 'Dr. Ocean',
-    position: { x: 0, y: 0 },
-    size: { width: 64, height: 64 },
-    state: CharacterState.IDLE,
-    isInteractive: false,
-    dialogues: [
-        "Bienvenue dans votre monde intérieur.",
-        "Utilisez vos pouvoirs pour guérir votre océan.",
-        "Chaque problème a sa solution, prenez votre temps."
-    ]
-};
+// Props pour le Provider
+interface GameProviderProps {
+    children: ReactNode;
+}
 
+// État initial du jeu
 const initialState: GameState = {
     currentScene: GameScene.MAIN_MENU,
     activePatient: null,
-    doctor: initialDoctor,
+    doctor: {
+        id: 'doctor-1',
+        type: 'DOCTOR',
+        name: 'Dr. Ocean',
+        position: { x: 400, y: 300 },
+        size: { width: 48, height: 48 },
+        state: CharacterState.IDLE,
+        isInteractive: true,
+        dialogues: []
+    },
     waitingPatients: [],
     score: 0,
     isPaused: false,
@@ -51,136 +35,128 @@ const initialState: GameState = {
         patientsHealed: 0,
         totalScore: 0,
         timeElapsed: 0,
-        successRate: 100
+        successRate: 0
     }
 };
 
-function gameReducer(state: GameState, action: GameAction): GameState {
+// Création du contexte
+const GameContext = createContext<GameContextType | undefined>(undefined);
+
+// Reducer pour gérer les actions
+const gameReducer = (state: GameState, action: GameAction): GameState => {
     switch (action.type) {
-        case 'CHANGE_SCENE':
+        case 'SET_SCENE':
             return {
                 ...state,
                 currentScene: action.payload
             };
-        case 'SHOW_TUTORIAL':
-            return {
-                ...state,
-                currentScene: GameScene.TUTORIAL
-            };
-        case 'SHOW_CREDITS':
-            return {
-                ...state,
-                currentScene: GameScene.CREDITS
-            };
-        case 'SHOW_ABOUT':
-            return {
-                ...state,
-                currentScene: GameScene.ABOUT
-            };
+        case 'SET_ACTIVE_PATIENT':
         case 'SELECT_ACTIVE_PATIENT':
             return {
                 ...state,
-                activePatient: {
-                    ...action.payload,
-                    type: 'PATIENT',
-                }
+                activePatient: action.payload
             };
-
-        case 'UPDATE_PATIENT_PROGRESS':
-            if (!state.activePatient) return state;
-            return {
-                ...state,
-                activePatient: {
-                    ...state.activePatient,
-                    healingProgress: action.payload.progress
-                }
-            };
-
-        case 'USE_DREAM_POWER':
-            // Logique pour utiliser un pouvoir dans le monde des rêves
-            return state;
-
-        case 'MOVE_DOCTOR':
-            return {
-                ...state,
-                doctor: {
-                    ...state.doctor,
-                    position: action.payload,
-                    state: CharacterState.WALKING
-                }
-            };
-
-        case 'UPDATE_OCEAN_SOLUTION':
-            if (!state.activePatient?.oceanMetaphor) return state;
-            return {
-                ...state,
-                activePatient: {
-                    ...state.activePatient,
-                    oceanMetaphor: {
-                        ...state.activePatient.oceanMetaphor,
-                        solutions: state.activePatient.oceanMetaphor.solutions.map(
-                            solution => solution.id === action.payload.solutionId
-                                ? { ...solution, isCompleted: action.payload.isCompleted }
-                                : solution
-                        )
+        case 'SET_DREAM_STATE':
+            if (state.activePatient) {
+                return {
+                    ...state,
+                    activePatient: {
+                        ...state.activePatient,
+                        dreamState: action.payload
                     }
-                }
+                };
+            }
+            return state;
+        case 'SET_WAITING_PATIENTS':
+            return {
+                ...state,
+                waitingPatients: action.payload
             };
-
         case 'ADD_WAITING_PATIENT':
             return {
                 ...state,
                 waitingPatients: [...state.waitingPatients, action.payload]
             };
-
-        case 'UPDATE_SCORE':
+        case 'MOVE_DOCTOR':
             return {
                 ...state,
-                score: action.payload,
-                stats: {
-                    ...state.stats,
-                    totalScore: state.stats.totalScore + action.payload
+                doctor: {
+                    ...state.doctor,
+                    position: action.payload
                 }
             };
-
-        case 'TOGGLE_PAUSE':
-            return {
-                ...state,
-                isPaused: !state.isPaused
-            };
-
         case 'TOGGLE_DREAM_WORLD':
             return {
                 ...state,
                 dreamWorldActive: !state.dreamWorldActive,
                 currentScene: !state.dreamWorldActive ? GameScene.DREAM_WORLD : GameScene.CLINIC
             };
-
-        case 'SET_DREAM_STATE':
-            if (!state.activePatient) return state;
+        case 'SET_SCORE':
             return {
                 ...state,
-                activePatient: {
-                    ...state.activePatient,
-                    dreamState: action.payload,
-                    type: 'PATIENT', // Ensure type is always 'PATIENT'
-                },
+                score: action.payload
+            };
+        case 'SET_PAUSED':
+            return {
+                ...state,
+                isPaused: action.payload
+            };
+        case 'SET_DREAM_WORLD_ACTIVE':
+            return {
+                ...state,
+                dreamWorldActive: action.payload
+            };
+        case 'UPDATE_STATS':
+            return {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    ...action.payload
+                }
+            };
+        case 'UPDATE_SCORE':
+            return {
+                ...state,
+                score: action.payload
             };
 
+        case 'UPDATE_PATIENT_PROGRESS':
+            if (state.activePatient) {
+                return {
+                    ...state,
+                    activePatient: {
+                        ...state.activePatient,
+                        healingProgress: action.payload.progress
+                    }
+                };
+            }
+            return state;
+
+        case 'UPDATE_OCEAN_SOLUTION':
+            if (state.activePatient) {
+                return {
+                    ...state,
+                    activePatient: {
+                        ...state.activePatient,
+                        oceanMetaphor: {
+                            ...state.activePatient.oceanMetaphor,
+                            solutions: state.activePatient.oceanMetaphor.solutions.map(solution =>
+                                solution.id === action.payload.solutionId
+                                    ? { ...solution, isCompleted: action.payload.isCompleted }
+                                    : solution
+                            )
+                        }
+                    }
+                };
+            }
+            return state;
         default:
             return state;
     }
-}
+};
 
-const GameContext = createContext<{
-    state: GameState;
-    dispatch: React.Dispatch<any>;
-}>({
-    state: initialState,
-    dispatch: () => null,
-});
-
-export const GameProvider: React.FC = ({ children }) => {
+// Provider component
+export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState);
 
     return (
@@ -190,10 +166,12 @@ export const GameProvider: React.FC = ({ children }) => {
     );
 };
 
+// Hook personnalisé pour utiliser le contexte
 export const useGame = () => {
     const context = useContext(GameContext);
-    if (!context) {
+    if (context === undefined) {
         throw new Error('useGame must be used within a GameProvider');
     }
     return context;
 };
+

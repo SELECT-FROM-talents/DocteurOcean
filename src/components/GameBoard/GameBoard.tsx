@@ -1,5 +1,4 @@
 import { useGame } from '@/contexts/GameContext';
-import { useClickInteraction } from '@/hooks/useClickInteraction';
 import { GameScene } from '@/types/game.types';
 import { MainMenu } from '../MainMenu/MainMenu';
 import { Clinic } from '../Clinic/Clinic';

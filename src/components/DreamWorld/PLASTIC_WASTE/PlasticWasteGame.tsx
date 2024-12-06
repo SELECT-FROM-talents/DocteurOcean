@@ -61,12 +61,13 @@ const PlasticWasteGame: React.FC<PlasticWasteGameProps> = ({ onGameEnd }) => {
 
     const createWasteItem = useCallback((): WasteItem => {
         const { x, y, rotation } = getRandomPosition();
+        const randomType = WASTE_TYPES[Math.floor(Math.random() * WASTE_TYPES.length)] || 'bottle';
         return {
             id: `waste-${Date.now()}-${Math.random()}`,
             x,
             y,
             rotation,
-            type: WASTE_TYPES[Math.floor(Math.random() * WASTE_TYPES.length)],
+            type: randomType,
             collected: false
         };
     }, []);

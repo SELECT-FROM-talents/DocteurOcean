@@ -5,7 +5,7 @@ import PlasticWasteGame from './PlasticWasteGame';
 import './PlasticWasteDream.css';
 
 const PlasticWasteDream: React.FC = () => {
-    const { state } = useGame();
+    const {} = useGame();
     const [showDialogue, setShowDialogue] = useState(true);
     const [showGame, setShowGame] = useState(false);
 
@@ -14,7 +14,7 @@ const PlasticWasteDream: React.FC = () => {
         setShowGame(true);
     };
 
-    const handleGameEnd = (score: number) => {
+    const handleGameEnd = () => {
         setShowGame(false);
     };
 
