@@ -10,19 +10,6 @@ import {
 import {Dispatch} from "react";
 import {GameAction} from "@/types/gameActions.types.ts";
 
-const patientNames = [
-    'Sophie', 'Lucas', 'Emma', 'Louis', 'Chloé',
-    'Hugo', 'Alice', 'Jules', 'Léa', 'Thomas'
-] as const;
-
-function getRandomElement<T>(array: readonly T[]): T {
-    if (array.length === 0) {
-        throw new Error("Cannot get random element from empty array");
-    }
-    // @ts-ignore
-    return array[Math.floor(Math.random() * array.length)];
-}
-
 const getSolutionsForMetaphor = (metaphorType: OceanMetaphorType): SolutionType[] => {
     const solutionsMap: Record<OceanMetaphorType, SolutionType[]> = {
         [OceanMetaphorType.POLLUTION]: [SolutionType.CLEAN_POLLUTION, SolutionType.BALANCE_PH],
@@ -50,17 +37,31 @@ const getPowersForMetaphor = (metaphorType: OceanMetaphorType): DreamPower[] => 
 };
 
 export const generatePatient = (index: number): Patient => {
+    // Attribuer un type spécifique basé sur l'index
+    const metaphorType = (() => {
+        switch (index) {
+            case 0:
+                return OceanMetaphorType.POLLUTION;
+            case 1:
+                return OceanMetaphorType.CORAL_BLEACHING;
+            case 2:
+                return OceanMetaphorType.PLASTIC_WASTE;
+            case 3:
+                return OceanMetaphorType.ACIDIFICATION;
+            case 4:
+                return OceanMetaphorType.ICE_MELTING;
+            default:
+                return OceanMetaphorType.POLLUTION;
+        }
+    })();
+
     const position: Position = {
         x: 50,
         y: 100 + (index * 80)
     };
 
-    const conditions = [HealthCondition.INFECTED, HealthCondition.HEALING] as const;
-    const condition = getRandomElement(conditions);
-
-    const metaphorTypes = Object.values(OceanMetaphorType)
-        .filter(type => type !== OceanMetaphorType.CREDITS); // Exclure CREDITS
-    const metaphorType = getRandomElement(metaphorTypes);
+    // Conditions de santé correspondantes
+    const condition = index === 4 ? HealthCondition.HEALING : HealthCondition.INFECTED;
 
     const dreamPowers = getPowersForMetaphor(metaphorType);
     const solutionTypes = getSolutionsForMetaphor(metaphorType);
@@ -72,10 +73,28 @@ export const generatePatient = (index: number): Patient => {
         description: getDescriptionForSolution(type)
     }));
 
+    // Noms spécifiques pour chaque type de patient
+    const patientName = (() => {
+        switch (metaphorType) {
+            case OceanMetaphorType.POLLUTION:
+                return 'Sophie';
+            case OceanMetaphorType.CORAL_BLEACHING:
+                return 'Lucas';
+            case OceanMetaphorType.PLASTIC_WASTE:
+                return 'Emma';
+            case OceanMetaphorType.ACIDIFICATION:
+                return 'Louis';
+            case OceanMetaphorType.ICE_MELTING:
+                return 'Chloé';
+            default:
+                return 'Patient';
+        }
+    })();
+
     return {
         id: `patient-${Date.now()}-${index}`,
         type: 'PATIENT' as const,
-        name: getRandomElement([...patientNames]),
+        name: patientName,
         position,
         size: { width: 48, height: 48 },
         state: CharacterState.IDLE,
