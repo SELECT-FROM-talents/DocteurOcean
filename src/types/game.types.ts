@@ -1,3 +1,4 @@
+
 export interface Position {
     x: number;
     y: number;
@@ -28,6 +29,7 @@ export interface Doctor extends Character {
 export interface Patient extends Character {
     type: 'PATIENT';
     condition: HealthCondition;
+    status?: string;  // Optionnel pour ne pas casser le code existant
     dreamState: boolean;
     dreamPowers: DreamPower[];
     oceanMetaphor: OceanMetaphor;
@@ -84,15 +86,18 @@ export enum CharacterState {
 export enum HealthCondition {
     HEALTHY = 'HEALTHY',
     INFECTED = 'INFECTED',
-    HEALING = 'HEALING'
+    HEALING = 'HEALING',
+    DEV = 'DEV'
 }
+
 
 export enum OceanMetaphorType {
     POLLUTION = 'POLLUTION',           // Représente une infection
     CORAL_BLEACHING = 'CORAL_BLEACHING', // Représente une inflammation
     PLASTIC_WASTE = 'PLASTIC_WASTE',     // Représente des corps étrangers
     ACIDIFICATION = 'ACIDIFICATION',     // Représente un déséquilibre
-    ICE_MELTING = 'ICE_MELTING'         // Représente une perte de tissu
+    ICE_MELTING = 'ICE_MELTING',         // Représente une perte de tissu
+    CREDITS = 'CREDITS'  // Ajout pour les crédits
 }
 
 export enum GameScene {
@@ -113,4 +118,9 @@ export interface GameState {
     isPaused: boolean;
     dreamWorldActive: boolean;
     stats: GameStats;
+}
+
+export interface DialogContent {
+    text: string;
+    speaker: 'doctor' | 'patient';
 }

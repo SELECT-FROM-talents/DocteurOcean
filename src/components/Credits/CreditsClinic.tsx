@@ -1,90 +1,151 @@
 import { useState, useCallback } from 'react';
-import { Patient } from '@/types/game.types';
+import { Patient, HealthCondition, OceanMetaphorType, CharacterState, DialogContent } from '@/types/game.types';
 import { WaitingRoom } from '../Clinic/WaitingRoom';
 import { Doctor } from '../Clinic/Doctor';
 import { PatientDialog } from '../Clinic/PatientDialog';
 import './CreditsClinic.css';
 
-export const Clinic = ({ onDialogEnd }) => {
+interface ClinicProps {
+    onDialogEnd: () => void;
+}
+
+export const Clinic = ({ onDialogEnd }: ClinicProps) => {
     const [patients] = useState<Patient[]>([
         {
-            id: 1,
+            id: 'credit-1',
+            type: 'PATIENT',
             name: 'Hugo',
-            condition: 'DEV',
+            condition: HealthCondition.DEV,
             position: { x: 100, y: 200 },
-            oceanMetaphor: { type: 'Crédits' },
+            size: { width: 48, height: 48 },
+            state: CharacterState.IDLE,
+            isInteractive: true,
+            dreamState: false,
+            dreamPowers: [],
+            healingProgress: 0,
+            oceanMetaphor: {
+                type: OceanMetaphorType.CREDITS,
+                severity: 0,
+                solutions: [],
+                currentProgress: 0
+            }
         },
         {
-            id: 2,
+            id: 'credit-2',
+            type: 'PATIENT',
             name: 'Ilias',
-            condition: 'DEV',
+            condition: HealthCondition.DEV,
             position: { x: 200, y: 300 },
-            oceanMetaphor: { type: 'Crédits' },
+            size: { width: 48, height: 48 },
+            state: CharacterState.IDLE,
+            isInteractive: true,
+            dreamState: false,
+            dreamPowers: [],
+            healingProgress: 0,
+            oceanMetaphor: {
+                type: OceanMetaphorType.CREDITS,
+                severity: 0,
+                solutions: [],
+                currentProgress: 0
+            }
         },
         {
-            id: 3,
+            id: 'credit-3',
+            type: 'PATIENT',
             name: 'Léon',
-            condition: 'DEV',
+            condition: HealthCondition.DEV,
             position: { x: 300, y: 400 },
-            oceanMetaphor: { type: 'Crédits' },
+            size: { width: 48, height: 48 },
+            state: CharacterState.IDLE,
+            isInteractive: true,
+            dreamState: false,
+            dreamPowers: [],
+            healingProgress: 0,
+            oceanMetaphor: {
+                type: OceanMetaphorType.CREDITS,
+                severity: 0,
+                solutions: [],
+                currentProgress: 0
+            }
         },
         {
-            id: 4,
+            id: 'credit-4',
+            type: 'PATIENT',
             name: 'Quentin',
-            condition: 'DEV',
+            condition: HealthCondition.DEV,
             position: { x: 400, y: 500 },
-            oceanMetaphor: { type: 'Crédits' },
+            size: { width: 48, height: 48 },
+            state: CharacterState.IDLE,
+            isInteractive: true,
+            dreamState: false,
+            dreamPowers: [],
+            healingProgress: 0,
+            oceanMetaphor: {
+                type: OceanMetaphorType.CREDITS,
+                severity: 0,
+                solutions: [],
+                currentProgress: 0
+            }
         },
         {
-            id: 5,
+            id: 'credit-5',
+            type: 'PATIENT',
             name: 'Téo',
-            condition: 'DEV',
+            condition: HealthCondition.DEV,
             position: { x: 500, y: 600 },
-            oceanMetaphor: { type: 'Crédits' },
-        },
+            size: { width: 48, height: 48 },
+            state: CharacterState.IDLE,
+            isInteractive: true,
+            dreamState: false,
+            dreamPowers: [],
+            healingProgress: 0,
+            oceanMetaphor: {
+                type: OceanMetaphorType.CREDITS,
+                severity: 0,
+                solutions: [],
+                currentProgress: 0
+            }
+        }
     ]);
+
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
     const [dialogStep, setDialogStep] = useState(0);
 
     const handlePatientClick = useCallback((patient: Patient) => {
         setSelectedPatient(patient);
-        setDialogStep(1); // Démarre le dialogue
+        setDialogStep(1);
     }, []);
 
     const handleDialogProgress = useCallback(() => {
         if (dialogStep < 3) {
-            setDialogStep((prev) => prev + 1); // Étape suivante
+            setDialogStep(prev => prev + 1);
         } else {
             setDialogStep(0);
             setSelectedPatient(null);
-            onDialogEnd(); // Appeler onDialogEnd lorsque le dialogue est terminé
+            onDialogEnd();
         }
     }, [dialogStep, onDialogEnd]);
 
-    const getDialogContent = useCallback(() => {
-        if (!selectedPatient) return null;
+    const getDialogContent = useCallback((): DialogContent | null => {
+        if (!selectedPatient || dialogStep === 0) return null;
 
-        const dialogs = [
-            {
-                text: '',
-                speaker: 'patient',
-            },
+        const dialogs: DialogContent[] = [
             {
                 text: `Bonjour ${selectedPatient.name}, je suis le Dr. Ocean. Comment vous sentez-vous ?`,
-                speaker: 'doctor',
+                speaker: 'doctor'
             },
             {
                 text: `Très bien ! Mon corps me semble comme un océan nettoyé.`,
-                speaker: 'patient',
+                speaker: 'patient'
             },
             {
                 text: `Je comprends. Je vois que votre océan intérieur montre des signes de ${selectedPatient.oceanMetaphor.type}.
                 Montrez nous de quoi il s'agît !`,
-                speaker: 'doctor',
-            },
+                speaker: 'doctor'
+            }
         ];
 
-        return dialogs[dialogStep];
+        return dialogs[dialogStep - 1] ?? null;
     }, [selectedPatient, dialogStep]);
 
     return (
@@ -104,7 +165,10 @@ export const Clinic = ({ onDialogEnd }) => {
                 </div>
 
                 <div className="main-area">
-                    <Doctor position={{ x: 0, y: 0 }} state="IDLE" />
+                    <Doctor
+                        position={{ x: 0, y: 0 }}
+                        state={CharacterState.IDLE}
+                    />
                 </div>
 
                 {selectedPatient && dialogStep > 0 && (

@@ -6,19 +6,19 @@ export const MainMenu = () => {
     const { dispatch } = useGame();
 
     const handleStartGame = () => {
-        dispatch({ type: 'CHANGE_SCENE', payload: GameScene.CLINIC });
+        dispatch({ type: 'SET_SCENE', payload: GameScene.CLINIC });  // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
     };
 
     const handleShowTutorial = () => {
-        dispatch({ type: 'CHANGE_SCENE', payload: GameScene.TUTORIAL });
+        dispatch({ type: 'SET_SCENE', payload: GameScene.TUTORIAL });  // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
     };
 
     const handleShowAbout = () => {
-        dispatch({ type: 'CHANGE_SCENE', payload: GameScene.ABOUT });
+        dispatch({ type: 'SET_SCENE', payload: GameScene.ABOUT });  // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
     };
 
     const handleShowCredits = () => {
-        dispatch({ type: 'CHANGE_SCENE', payload: GameScene.CREDITS });
+        dispatch({ type: 'SET_SCENE', payload: GameScene.CREDITS });  // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
     };
 
     return (

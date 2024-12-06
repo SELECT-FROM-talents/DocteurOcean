@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useGame } from '@/contexts/GameContext';
-import { Patient, Position, CharacterState } from '@/types/game.types';
+import {DialogContent, Patient, Position} from '@/types/game.types';
 import { generatePatient } from '@/utils/gameHelpers';
 import { WaitingRoom } from './WaitingRoom';
 import { Doctor } from './Doctor';
@@ -64,10 +64,10 @@ export const Clinic = () => {
         dispatch({ type: 'TOGGLE_DREAM_WORLD' });
     }, [selectedPatient, dispatch]);
 
-    const getDialogContent = useCallback(() => {
+    const getDialogContent = useCallback((): DialogContent | null => {
         if (!selectedPatient) return null;
 
-        const dialogs = [
+        const dialogs: DialogContent[] = [
             {
                 text: `Bonjour ${selectedPatient.name}, je suis le Dr. Ocean. Comment vous sentez-vous ?`,
                 speaker: 'doctor'
@@ -78,17 +78,18 @@ export const Clinic = () => {
             },
             {
                 text: `Je comprends. Je vois que votre océan intérieur montre des signes de ${selectedPatient.oceanMetaphor.type}. 
-                      Voulez-vous explorer cela ensemble ?`,
+                  Voulez-vous explorer cela ensemble ?`,
                 speaker: 'doctor'
             },
             {
                 text: `Pour vous guérir, vous devrez plonger dans votre océan intérieur et le soigner vous-même. 
-                      Êtes-vous prêt pour ce voyage ?`,
+                  Êtes-vous prêt pour ce voyage ?`,
                 speaker: 'doctor'
             }
         ];
 
-        return dialogs[dialogStep];
+        // S'assurer qu'on retourne toujours soit un DialogContent soit null
+        return dialogs[dialogStep] ?? null;
     }, [selectedPatient, dialogStep]);
 
     // Génération périodique de patients
@@ -131,7 +132,7 @@ export const Clinic = () => {
 
                 {selectedPatient && dialogStep > 0 && (
                     <PatientDialog
-                        dialog={getDialogContent()}
+                        dialog={getDialogContent()} // getDialogContent() retourne maintenant toujours DialogContent | null
                         onContinue={handleDialogProgress}
                         patient={selectedPatient}
                         isLastStep={dialogStep === 3}

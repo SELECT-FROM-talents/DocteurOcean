@@ -6,7 +6,7 @@ export const Tutorial = () => {
     const { dispatch } = useGame();
 
     const handleBack = () => {
-        dispatch({ type: 'CHANGE_SCENE', payload: GameScene.MAIN_MENU });
+        dispatch({ type: 'SET_SCENE', payload: GameScene.MAIN_MENU }); // Changé de 'CHANGE_SCENE' à 'SET_SCENE'
     };
 
     return (

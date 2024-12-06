@@ -7,7 +7,8 @@ import {
     DreamPower,
     SolutionType
 } from '@/types/game.types';
-import {useGame} from "@/contexts/GameContext.tsx";
+import {Dispatch} from "react";
+import {GameAction} from "@/types/gameActions.types.ts";
 
 const patientNames = [
     'Sophie', 'Lucas', 'Emma', 'Louis', 'Chloé',
@@ -28,7 +29,8 @@ const getSolutionsForMetaphor = (metaphorType: OceanMetaphorType): SolutionType[
         [OceanMetaphorType.CORAL_BLEACHING]: [SolutionType.HEAL_CORAL, SolutionType.STABILIZE_TEMPERATURE],
         [OceanMetaphorType.PLASTIC_WASTE]: [SolutionType.REMOVE_PLASTIC, SolutionType.CLEAN_POLLUTION],
         [OceanMetaphorType.ACIDIFICATION]: [SolutionType.BALANCE_PH, SolutionType.HEAL_CORAL],
-        [OceanMetaphorType.ICE_MELTING]: [SolutionType.STABILIZE_TEMPERATURE]
+        [OceanMetaphorType.ICE_MELTING]: [SolutionType.STABILIZE_TEMPERATURE],
+        [OceanMetaphorType.CREDITS]: []  // Ajout pour les crédits
     };
 
     return solutionsMap[metaphorType] || [SolutionType.CLEAN_POLLUTION];
@@ -40,7 +42,8 @@ const getPowersForMetaphor = (metaphorType: OceanMetaphorType): DreamPower[] => 
         [OceanMetaphorType.CORAL_BLEACHING]: [DreamPower.CORAL_RESTORATION, DreamPower.MARINE_COMMUNICATION],
         [OceanMetaphorType.PLASTIC_WASTE]: [DreamPower.POLLUTION_CLEANING, DreamPower.MARINE_COMMUNICATION],
         [OceanMetaphorType.ACIDIFICATION]: [DreamPower.WATER_CONTROL, DreamPower.CORAL_RESTORATION],
-        [OceanMetaphorType.ICE_MELTING]: [DreamPower.ICE_FORMATION, DreamPower.WATER_CONTROL]
+        [OceanMetaphorType.ICE_MELTING]: [DreamPower.ICE_FORMATION, DreamPower.WATER_CONTROL],
+        [OceanMetaphorType.CREDITS]: [DreamPower.WATER_CONTROL]  // Ajout pour les crédits
     };
 
     return powersMap[metaphorType] || [DreamPower.WATER_CONTROL];
@@ -55,7 +58,8 @@ export const generatePatient = (index: number): Patient => {
     const conditions = [HealthCondition.INFECTED, HealthCondition.HEALING] as const;
     const condition = getRandomElement(conditions);
 
-    const metaphorTypes = Object.values(OceanMetaphorType);
+    const metaphorTypes = Object.values(OceanMetaphorType)
+        .filter(type => type !== OceanMetaphorType.CREDITS); // Exclure CREDITS
     const metaphorType = getRandomElement(metaphorTypes);
 
     const dreamPowers = getPowersForMetaphor(metaphorType);
@@ -101,6 +105,9 @@ const getDescriptionForSolution = (type: SolutionType): string => {
     return descriptions[type] || "Solution à trouver";
 };
 
-export const setDreamState = (dispatch, state) => {
+export const setDreamState = (
+    dispatch: Dispatch<GameAction>,
+    state: boolean
+) => {
     dispatch({ type: 'SET_DREAM_STATE', payload: state });
 };
