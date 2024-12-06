@@ -13,7 +13,7 @@ import {GameAction} from "@/types/gameActions.types.ts";
 const getSolutionsForMetaphor = (metaphorType: OceanMetaphorType): SolutionType[] => {
     const solutionsMap: Record<OceanMetaphorType, SolutionType[]> = {
         [OceanMetaphorType.POLLUTION]: [SolutionType.CLEAN_POLLUTION, SolutionType.BALANCE_PH],
-        [OceanMetaphorType.CORAL_BLEACHING]: [SolutionType.HEAL_CORAL, SolutionType.STABILIZE_TEMPERATURE],
+        [OceanMetaphorType.CORAL_BREATHING]: [SolutionType.HEAL_CORAL, SolutionType.STABILIZE_TEMPERATURE],
         [OceanMetaphorType.PLASTIC_WASTE]: [SolutionType.REMOVE_PLASTIC, SolutionType.CLEAN_POLLUTION],
         [OceanMetaphorType.ACIDIFICATION]: [SolutionType.BALANCE_PH, SolutionType.HEAL_CORAL],
         [OceanMetaphorType.ICE_MELTING]: [SolutionType.STABILIZE_TEMPERATURE],
@@ -26,7 +26,7 @@ const getSolutionsForMetaphor = (metaphorType: OceanMetaphorType): SolutionType[
 const getPowersForMetaphor = (metaphorType: OceanMetaphorType): DreamPower[] => {
     const powersMap: Record<OceanMetaphorType, DreamPower[]> = {
         [OceanMetaphorType.POLLUTION]: [DreamPower.POLLUTION_CLEANING, DreamPower.WATER_CONTROL],
-        [OceanMetaphorType.CORAL_BLEACHING]: [DreamPower.CORAL_RESTORATION, DreamPower.MARINE_COMMUNICATION],
+        [OceanMetaphorType.CORAL_BREATHING]: [DreamPower.CORAL_RESTORATION, DreamPower.MARINE_COMMUNICATION],
         [OceanMetaphorType.PLASTIC_WASTE]: [DreamPower.POLLUTION_CLEANING, DreamPower.MARINE_COMMUNICATION],
         [OceanMetaphorType.ACIDIFICATION]: [DreamPower.WATER_CONTROL, DreamPower.CORAL_RESTORATION],
         [OceanMetaphorType.ICE_MELTING]: [DreamPower.ICE_FORMATION, DreamPower.WATER_CONTROL],
@@ -43,7 +43,7 @@ export const generatePatient = (index: number): Patient => {
             case 0:
                 return OceanMetaphorType.POLLUTION;
             case 1:
-                return OceanMetaphorType.CORAL_BLEACHING;
+                return OceanMetaphorType.CORAL_BREATHING;
             case 2:
                 return OceanMetaphorType.PLASTIC_WASTE;
             case 3:
@@ -78,7 +78,7 @@ export const generatePatient = (index: number): Patient => {
         switch (metaphorType) {
             case OceanMetaphorType.POLLUTION:
                 return 'Sophie';
-            case OceanMetaphorType.CORAL_BLEACHING:
+            case OceanMetaphorType.CORAL_BREATHING:
                 return 'Lucas';
             case OceanMetaphorType.PLASTIC_WASTE:
                 return 'Emma';

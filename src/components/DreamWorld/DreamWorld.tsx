@@ -1,7 +1,7 @@
 import { useGame } from '@/contexts/GameContext';
 import './DreamWorld.css';
 import { PollutionDream } from "@/components/DreamWorld/POLLUTION/PollutionDream.tsx";
-import { CoralBleachingDream } from "@/components/DreamWorld/CORAL_BLEACHING/CoralBleachingDream.tsx";
+import CoralBreathingDream from '@/components/DreamWorld/CORAL_BREATHING/CoralBreathingDream';
 import { AcidificationDream } from "@/components/DreamWorld/ACIDIFICATION/AcidificationDream.tsx";
 import IceMeltingDream from "@/components/DreamWorld/ICE_MELTING/IceMeltingDream.tsx";
 import PlasticWasteDream from "@/components/DreamWorld/PLASTIC_WASTE/PlasticWasteDream.tsx";
@@ -26,7 +26,7 @@ export const DreamWorld = () => {
             <div className="dream-world-background">
                 <h2>Le Monde des Rêves</h2>
                 {activePatient.oceanMetaphor.type === 'POLLUTION' && <PollutionDream />}
-                {activePatient.oceanMetaphor.type === 'CORAL_BLEACHING' && <CoralBleachingDream />}
+                {activePatient.oceanMetaphor.type === 'CORAL_BREATHING' && <CoralBreathingDream />}
                 {activePatient.oceanMetaphor.type === 'PLASTIC_WASTE' && <PlasticWasteDream />}
                 {activePatient.oceanMetaphor.type === 'ACIDIFICATION' && <AcidificationDream />}
                 {activePatient.oceanMetaphor.type === 'ICE_MELTING' && <IceMeltingDream />}

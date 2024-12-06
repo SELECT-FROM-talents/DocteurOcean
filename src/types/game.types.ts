@@ -93,7 +93,7 @@ export enum HealthCondition {
 
 export enum OceanMetaphorType {
     POLLUTION = 'POLLUTION',           // Représente une infection
-    CORAL_BLEACHING = 'CORAL_BLEACHING', // Représente une inflammation
+    CORAL_BREATHING = 'CORAL_BREATHING', // Représente une inflammation
     PLASTIC_WASTE = 'PLASTIC_WASTE',     // Représente des corps étrangers
     ACIDIFICATION = 'ACIDIFICATION',     // Représente un déséquilibre
     ICE_MELTING = 'ICE_MELTING',         // Représente une perte de tissu
