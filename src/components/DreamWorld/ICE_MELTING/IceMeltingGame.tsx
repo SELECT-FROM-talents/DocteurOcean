@@ -1,17 +1,45 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useGame } from '@/contexts/GameContext';
 import "./IceMeltingGame.css";
 
 const ROWS = 11;
 const COLS = 11;
 
 const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGameEnd }) => {
+    const { dispatch } = useGame();
     const [grid, setGrid] = useState<string[][]>([]);
     const [timeLeft, setTimeLeft] = useState(30);
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
+    const [shouldEndGame, setShouldEndGame] = useState(false);
     const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0);
 
+    const scoreRef = useRef(0);
     const timerRef = useRef<number | null>(null);
+
+    useEffect(() => {
+        if (shouldEndGame && !gameOver) {
+            dispatch({ type: 'UPDATE_SCORE', payload: scoreRef.current });
+            dispatch({
+                type: 'UPDATE_PATIENT_PROGRESS',
+                payload: { progress: Math.min(100, scoreRef.current) }
+            });
+
+            if (scoreRef.current >= 20) {
+                dispatch({
+                    type: 'UPDATE_OCEAN_SOLUTION',
+                    payload: {
+                        solutionId: 'STOP_ICE_MELTING',
+                        isCompleted: true
+                    }
+                });
+            }
+
+            setTimeout(() => {
+                setGameOver(true);
+            }, 2000);
+        }
+    }, [shouldEndGame, gameOver, dispatch]);
 
     useEffect(() => {
         const centerRow = Math.floor(ROWS / 2);
@@ -76,8 +104,6 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
             [0, 1],
         ];
         return directions.some(([dx, dy]) => {
-            if (dx === undefined || dy === undefined) return false;
-
             const newRow = row + dx;
             const newCol = col + dy;
 
@@ -117,13 +143,9 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
     const endGame = () => {
         const remainingWhites = grid.flat().filter((cell) => cell.startsWith("white")).length;
         const finalScore = remainingWhites * 2;
-
-        if (remainingWhites === 0 || finalScore < 20) {
-            setGameOver(true);
-        } else {
-            setScore(finalScore);
-            setGameOver(true);
-        }
+        scoreRef.current = finalScore;
+        setScore(finalScore);
+        setShouldEndGame(true);
     };
 
     const endDialogue = {
@@ -132,13 +154,16 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
             score >= 20
                 ? "Votre performance est excellente, vous avez restauré une grande partie de votre océan intérieur."
                 : "Votre océan reste partiellement détruit, mais vous pouvez continuer à améliorer votre santé.",
-            "N'oubliez pas que chaque action compte pour préserver nos océans et notre santé."
+            "N'oubliez pas que chaque action compte pour préserver nos océans et notre santé.",
+            "Cette expérience montre le lien entre la fonte des glaces et notre bien-être."
         ],
         patient: [
             "Je vois à quel point cet exercice est difficile...",
             score >= 20
                 ? "Je ressens déjà une amélioration, merci pour cet exercice."
                 : "Je comprends que je dois redoubler d'efforts pour me rétablir.",
+            "Je réalise l'importance de préserver les glaces pour notre planète.",
+            "Je veillerai à faire ma part pour protéger notre environnement."
         ]
     };
 
@@ -147,7 +172,8 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
         if (currentDialogueIndex < totalDialogues - 1) {
             setCurrentDialogueIndex((prev) => prev + 1);
         } else {
-            onGameEnd(score);
+            onGameEnd(scoreRef.current);
+            dispatch({ type: 'TOGGLE_DREAM_WORLD' });
         }
     };
 
@@ -160,13 +186,17 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
             : endDialogue.patient[speakerIndex];
 
         return (
-            <div className="game-over">
+            <div className="plastic-waste-game">
                 <div className="dialogue">
                     <p>
-                        <strong>{isDoctorSpeaking ? "Dr. Océan" : "Patient"}:</strong> {dialogueText}
+                        <strong>{isDoctorSpeaking ? 'Dr. Océan:' : 'Patient:'}</strong>
                     </p>
-                    <button onClick={handleNextDialogue}>
-                        {currentDialogueIndex < totalDialogues - 1 ? "Suivant" : "Retour"}
+                    <p>{dialogueText}</p>
+                    <button
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                        onClick={handleNextDialogue}
+                    >
+                        {currentDialogueIndex < totalDialogues - 1 ? 'Suivant' : 'Retour à la clinique'}
                     </button>
                 </div>
             </div>
