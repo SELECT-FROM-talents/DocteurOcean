@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./CreditsIMTeo.css";
 
 const ROWS = 11; // Nombre de lignes
@@ -6,8 +6,8 @@ const COLS = 11; // Nombre de colonnes
 
 const CreditsIMTeo: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) => {
     const [grid, setGrid] = useState<string[][]>([]);
-    const [timerActive, setTimerActive] = useState(false); // Pour activer le timer
-    const [timeLeft, setTimeLeft] = useState(5); // Temps avant l'action finale (5 secondes)
+    const [timerActive, setTimerActive] = useState(false);
+    const [, setTimeLeft] = useState(5); // On garde setTimeLeft car il est utilisé
 
     const T_POSITION = { row: 4, col: 3 };
     const É_POSITION = { row: 4, col: 4 };
@@ -40,8 +40,9 @@ const CreditsIMTeo: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) => {
             setGrid((prevGrid) =>
                 prevGrid.map((row, rowIndex) =>
                     row.map((cell, colIndex) => {
-                        if (cell.startsWith("white-red-")) {
-                            const level = parseInt(cell.split("-")[2]);
+                        if (cell?.startsWith("white-red-")) {
+                            const parts = cell.split("-");
+                            const level = parts[2] ? parseInt(parts[2]) : 0;
                             if (level >= 10) {
                                 return "blue";
                             }
@@ -71,7 +72,7 @@ const CreditsIMTeo: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) => {
                 setTimeLeft((prevTime) => {
                     if (prevTime <= 1) {
                         clearInterval(timer);
-                        onGameEnd(); // Appelle la fonction pour changer de scène
+                        onGameEnd();
                     }
                     return prevTime - 1;
                 });
@@ -80,25 +81,27 @@ const CreditsIMTeo: React.FC<{ onGameEnd: () => void }> = ({ onGameEnd }) => {
         }
     }, [timerActive, onGameEnd]);
 
-    const hasAdjacentBlue = (grid: string[][], row: number, col: number) => {
-        const directions = [
+    const hasAdjacentBlue = (grid: string[][], row: number, col: number): boolean => {
+        const directions: [number, number][] = [
             [-1, 0],
             [1, 0],
             [0, -1],
             [0, 1],
         ];
         return directions.some(([dx, dy]) => {
+            if (dx === undefined || dy === undefined) return false;
             const newRow = row + dx;
             const newCol = col + dy;
             return grid[newRow]?.[newCol] === "blue";
         });
     };
 
-    const getCellColor = (cell: string) => {
+    const getCellColor = (cell: string): string => {
         if (cell === "blue") return "#0000FF";
         if (cell === "white") return "#FFFFFF";
-        if (cell.startsWith("white-red-")) {
-            const level = parseInt(cell.split("-")[2]);
+        if (cell?.startsWith("white-red-")) {
+            const parts = cell.split("-");
+            const level = parts[2] ? parseInt(parts[2]) : 0;
             const red = Math.min(255, level * 25);
             return `rgb(${red}, ${255 - red}, 255)`;
         }

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import { Clinic } from "./CreditsClinic";
 import CreditsIMTeo from "./CreditsIMTeo";
 import CreditsPWLeon from "./CreditsPWLeon";
 import "./CreditsGameBoard.css";
+import {useState} from "react";
 
 export const CreditsGameBoard = () => {
     const [currentScene, setCurrentScene] = useState<"CLINIC" | "CREDITS_IM_TEO" | "CREDITS_PW_LEON">("CLINIC");
