@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-
 import "./IceMeltingGame.css";
 
 const ROWS = 11;
@@ -14,7 +13,6 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
 
     const timerRef = useRef<number | null>(null);
 
-    // Initialisation de la grille
     useEffect(() => {
         const centerRow = Math.floor(ROWS / 2);
         const centerCol = Math.floor(COLS / 2);
@@ -29,7 +27,6 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
         setGrid(initialGrid);
     }, []);
 
-    // Timer pour le jeu
     useEffect(() => {
         if (timeLeft <= 0) {
             endGame();
@@ -50,15 +47,14 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
         };
     }, [timeLeft]);
 
-    // Animation des teintes rouges
     useEffect(() => {
         const interval = setInterval(() => {
             setGrid((prevGrid) =>
                 prevGrid.map((row, rowIndex) =>
                     row.map((cell, colIndex) => {
                         if (cell.startsWith("white-red-")) {
-                            const level = parseInt(cell.split("-")[2]);
-                            if (level >= 10) return "blue"; // Devient bleu
+                            const level = parseInt(cell.split("-")[2] || "0");
+                            if (level >= 10) return "blue";
                             return `white-red-${level + 1}`;
                         }
                         if (cell === "white" && hasAdjacentBlue(prevGrid, rowIndex, colIndex)) {
@@ -72,16 +68,22 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
         return () => clearInterval(interval);
     }, []);
 
-    const hasAdjacentBlue = (grid: string[][], row: number, col: number) => {
-        const directions = [
+    const hasAdjacentBlue = (grid: string[][], row: number, col: number): boolean => {
+        const directions: [number, number][] = [
             [-1, 0],
             [1, 0],
             [0, -1],
             [0, 1],
         ];
         return directions.some(([dx, dy]) => {
+            if (dx === undefined || dy === undefined) return false;
+
             const newRow = row + dx;
             const newCol = col + dy;
+
+            if (newRow < 0 || newRow >= grid.length) return false;
+            if (newCol < 0 || newCol >= (grid[0]?.length || 0)) return false;
+
             return grid[newRow]?.[newCol] === "blue";
         });
     };
@@ -91,7 +93,7 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
             prevGrid.map((rowCells, rowIndex) =>
                 rowCells.map((cell, colIndex) => {
                     if (rowIndex === row && colIndex === col && cell.startsWith("white-red-")) {
-                        const level = parseInt(cell.split("-")[2]);
+                        const level = parseInt(cell.split("-")[2] || "0");
                         return level > 10 ? `white-red-${level - 10}` : "white";
                     }
                     return cell;
@@ -100,11 +102,12 @@ const IceMeltingGame: React.FC<{ onGameEnd: (score: number) => void }> = ({ onGa
         );
     };
 
-    const getCellColor = (cell: string) => {
+    const getCellColor = (cell: string): string => {
         if (cell === "blue") return "#0000FF";
         if (cell === "white") return "#FFFFFF";
         if (cell.startsWith("white-red-")) {
-            const level = parseInt(cell.split("-")[2]);
+            const level = parseInt(cell.split("-")[2] || "0");
+            if (isNaN(level)) return "#000000";
             const red = Math.min(255, level * 25);
             return `rgb(${red}, ${255 - red}, 255)`;
         }

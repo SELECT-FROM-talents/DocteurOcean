@@ -5,7 +5,7 @@ import IceMeltingGame from './IceMeltingGame';
 import './IceMeltingDream.css';
 
 const IceMeltingDream: React.FC = () => {
-    const { state } = useGame();
+    const {} = useGame();
     const [showDialogue, setShowDialogue] = useState(true);
     const [showGame, setShowGame] = useState(false);
 
@@ -14,7 +14,7 @@ const IceMeltingDream: React.FC = () => {
         setShowGame(true);
     };
 
-    const handleGameEnd = (score: number) => {
+    const handleGameEnd = () => {
         setShowGame(false);
     };
 
