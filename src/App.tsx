@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
-import "./App.css"; // Importation du fichier CSS
+import "./App.css";
 import { GameProvider } from "./contexts/GameContext";
 import { GameBoard } from "./components/GameBoard/GameBoard";
 
@@ -14,7 +14,7 @@ const App: React.FC = () => {
     const [currentLogo, setCurrentLogo] = useState<string>("lyreco1.png");
     const [visible, setVisible] = useState<boolean>(true);
 
-    const logos = ["lyreco1.png", "lyreco2.png", "lyreco3.png"];
+    const logos = ["lyreco1.png", "lyreco2.png", "lyreco3.png"] as const;
 
     const moveLogo = () => {
         const maxX = window.innerWidth - 100;
@@ -23,11 +23,15 @@ const App: React.FC = () => {
         setYPos(Math.random() * maxY);
     };
 
+    const getRandomLogo = (): string => {
+        return logos[Math.floor(Math.random() * logos.length)] || "lyreco1.png";
+    };
+
     useEffect(() => {
         const interval = setInterval(() => {
             setVisible(false);
             setTimeout(() => {
-                setCurrentLogo(logos[Math.floor(Math.random() * logos.length)]);
+                setCurrentLogo(getRandomLogo());
                 moveLogo();
                 setVisible(true);
             }, 500);
@@ -45,9 +49,13 @@ const App: React.FC = () => {
                         top: `${yPos}px`,
                     }}
                     className={`logo ${!visible ? "hidden" : ""}`}
-                    onClick={() => confetti()} // Confettis au clic
+                    onClick={() => confetti()}
                 >
-                    <img src={`${currentLogo}`} alt="Logo Lyreco" className="logo-image"/>
+                    <img
+                        src={currentLogo}
+                        alt="Logo Lyreco"
+                        className="logo-image"
+                    />
                 </div>
             </div>
         </GameProvider>
